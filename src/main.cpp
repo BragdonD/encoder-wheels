@@ -1,9 +1,13 @@
 #include <Arduino.h>
 
+int captor = 15; ///Pin of the optical fork 
+
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200); ///Start of the serie communication
+  pinMode(captor, INPUT_PULLUP);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  Serial.print("Value Read : ");
+  Serial.print( digitalRead(captor) );
 }
