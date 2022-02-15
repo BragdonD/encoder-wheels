@@ -9,5 +9,5 @@ void setup() {
 
 void loop() {
   Serial.print("Value Read : ");
-  Serial.print( digitalRead(captor) );
+  Serial.println( digitalRead(captor) );
 }
