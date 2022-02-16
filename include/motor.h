@@ -8,10 +8,10 @@
 #define BACKWARD 0x0
 
 ///Define motors pin
-#define MOTOR1_DIR_PIN 0U
-#define MOTOR2_DIR_PIN 2U
-#define MOTOR1_SPD_PIN 5U
-#define MOTOR2_SPD_PIN 4U
+#define MOTOR1_DIR_PIN 0U ///D3
+#define MOTOR2_DIR_PIN 2U ///D4
+#define MOTOR1_SPD_PIN 5U ///D1
+#define MOTOR2_SPD_PIN 4U ///D2
 
 typedef struct motor
 {
