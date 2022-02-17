@@ -16,7 +16,11 @@
 
 typedef struct captor {
     uint8_t pin; ///digital pin
-    int cmpt; ///number of 1 the captor has detected
+    int count; ///number of HIGH the captor pin has detected in the last period
+    unsigned long int time;
 }t_captor, captor;
+
+float calculDistance(int holesCounter);
+float calculSpeed(float distance, float time);
 
 #endif // ROBOT_H
