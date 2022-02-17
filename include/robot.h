@@ -1,6 +1,8 @@
 #if !defined(ROBOT_H)
 #define ROBOT_H
 
+#include <Arduino.h>
+
 ///Define pins
 #define CAPTOR_MOT1_PIN 14U ///D5
 #define CAPTOR_MOT2_PIN 12U ///D6
