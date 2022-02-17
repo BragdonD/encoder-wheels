@@ -9,11 +9,14 @@
 
 ///Define material characteristics
 #define CAPTOR_HOLES_NB 20
+#define WHEEL_DIAMETER_CM 6.844f
+#define WHEEL_PERIMETER_CM 21.5f
+#define HOLE_ADVANCE_ANGLE 18.0f
+#define HOLE_ADVANCE_CM 1.075f
 
 typedef struct captor {
     uint8_t pin; ///digital pin
     int cmpt; ///number of 1 the captor has detected
 }t_captor, captor;
-
 
 #endif // ROBOT_H
