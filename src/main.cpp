@@ -1,3 +1,13 @@
+/**
+ * @file main.cpp
+ * @author Thomas DUCLOS
+ * @brief This is the main file of the project, with the setup and loop function
+ * @version 0.1
+ * @date 2022-02-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <Arduino.h>
 #include <SimpleTimer.h>
 #include "robot.h"
@@ -42,7 +52,7 @@ void setup() {
 }
 
 void loop() {
-  SpeedPrinting_timer.run(); ///Need to be called to make the timer worked
+  SpeedPrinting_timer.run(); ///Need to be called to make the timer works
 
   MooveForward(motorB, 255.0f);
   MooveForward(motorA, 255.0f);

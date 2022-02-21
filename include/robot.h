@@ -1,3 +1,13 @@
+/**
+ * @file robot.h
+ * @author Thomas DUCLOS
+ * @brief This file is the header file for all the functions and structures related to the captor
+ * @version 0.1
+ * @date 2022-02-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #if !defined(ROBOT_H)
 #define ROBOT_H
 
@@ -17,7 +27,7 @@
 typedef struct captor {
     uint8_t pin; ///digital pin
     volatile int count; ///number of HIGH the captor pin has detected in the last period
-    volatile unsigned long int time;
+    volatile unsigned long int time; ///last time the captor data has been reset
 }t_captor, captor;
 
 captor* InitCaptor(uint8_t pin);
