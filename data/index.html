@@ -10,12 +10,40 @@
 </head>
 <body>
     <div>
-        <div>
-            <div id="left">
-                
-            </div>
-            <div id="right">
+        <div class="grid">
+            <div id="left" class="container">
+                <div class="input-wrapper">
+                    <input type="range" name="left-motor-speed" min="0" max="255">
+                    <label for="left-motor-speed">Speed</label>
+                </div>
+                <div class="value-wrapper">
+                    <p id="left-number" class="number">
 
+                    </p>
+                </div>
+                <div class="on-off-wrapper">
+                    <div class="button-wrapper">
+                        <button id="left-on" class="on">On</button>
+                        <button id="left-off" class="off">Off</button>
+                    </div>
+                </div>
+            </div>
+            <div id="right" class="container">
+                <div class="input-wrapper">
+                    <input type="range" name="right-motor-speed" min="0" max="255">
+                    <label for="left-motor-speed">Speed</label>
+                </div>
+                <div class="value-wrapper">
+                    <p id="right-number" class="number">
+
+                    </p>
+                </div>
+                <div class="on-off-wrapper">
+                    <div class="button-wrapper">
+                        <button id="right-on" class="on">On</button>
+                        <button id="right-off" class="off">Off</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
