@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "*.ino": "cpp",
+<<<<<<< HEAD
         "functional": "cpp"
     },
+=======
+        "functional": "cpp",
+        "string": "cpp"
+    }
+>>>>>>> main
 }

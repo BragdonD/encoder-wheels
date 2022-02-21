@@ -9,6 +9,25 @@
  * 
  */
 #include "motor.h"
+#include "robot.h"
+
+/**
+ * @brief Function to init a motor stucture
+ * 
+ * @param dir_pin Direction pin
+ * @param spd_pin Speed pin
+ * @return motor structure which has been created
+ */
+motor *InitMotor (uint8_t dir_pin, uint8_t  spd_pin) {
+    motor *x = (motor*)malloc(sizeof(motor));
+
+    x->dir_pin = dir_pin;
+    x->spd_pin = spd_pin;
+    x->direction = FORWARD;
+    x->speed = 0;
+    
+    return x;
+}
 
 /**
  * @brief This function allows us to go forward at a given speed
@@ -49,4 +68,18 @@ void Moove (motor x) {
         digitalWrite(x.dir_pin, LOW);
     }
     analogWrite(x.spd_pin, x.speed);
+}
+
+/**
+ * @brief Function to print the speed of a motor inside the serial 
+ * 
+ * @param x motor to print
+ * @param str name of the motor
+ */
+void PrintMotorSpeed(motor x, const char* str) {
+    Serial.print("Speed Motor ");
+    Serial.print(str);
+    Serial.print(" : ");
+    Serial.print( x.speed );
+    Serial.println("km.h^(-1)");
 }
