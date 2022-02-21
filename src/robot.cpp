@@ -16,20 +16,32 @@
  * @param pin Digital pin of the captor
  * @return captor structure which has been created
  */
-captor InitCaptor(uint8_t pin){
-    captor x;
-    x.pin = pin;
+captor* InitCaptor(uint8_t pin){
+    captor *x = (captor*)malloc(sizeof(captor));
+
+    x->pin = pin;
     ///Init both counter to 0
-    x.count = 0; 
-    x.time = 0UL;
+    x->count = 0; 
+    x->time = 0UL;
+    
     return x;
+}
+
+/**
+ * @brief Function which reset the count inside the captor struct
+ * 
+ * @param x pointer towards the captor structure
+ */
+void ResetCaptor(captor *x) {
+    x->count = 0; ///reset hole count to 0
+    x->time = millis(); ///reset captor time to actual time
 }
 
 /**
  * @brief Function which calculs the distance traveled by the robot
  * 
  * @param holesCounter Number of holes detected in the last period
- * @return float the distance traveled
+ * @return float the distance traveled in cm
  */
 float calculDistance(int holesCounter) {
     return HOLE_ADVANCE_CM * (float)holesCounter;
