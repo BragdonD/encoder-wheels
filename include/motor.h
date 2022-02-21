@@ -21,6 +21,7 @@ typedef struct motor
     float speed;        //rotation speed
 }t_motor, motor;
 
+motor InitMotor (uint8_t dir_pin, uint8_t  spd_pin);
 void MooveForward (motor *x, float speed);
 void MooveBackward (motor *x, float speed);
 void Moove (motor x);

@@ -11,6 +11,22 @@
 #include "motor.h"
 
 /**
+ * @brief Function to init a motor stucture
+ * 
+ * @param dir_pin Direction pin
+ * @param spd_pin Speed pin
+ * @return motor structure which has been created
+ */
+motor InitMotor (uint8_t dir_pin, uint8_t  spd_pin) {
+    motor x;
+    x.dir_pin = dir_pin;
+    x.spd_pin = spd_pin;
+    x.direction = FORWARD;
+    x.speed = 0;
+    return x;
+}
+
+/**
  * @brief This function allows us to go forward at a given speed
  * 
  * @param x the motor to change

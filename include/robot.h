@@ -20,6 +20,7 @@ typedef struct captor {
     unsigned long int time;
 }t_captor, captor;
 
+captor InitCaptor(uint8_t pin);
 float calculDistance(int holesCounter);
 float calculSpeed(float distance, float time);
 
