@@ -7,7 +7,7 @@
  * @param _useMDNS boolean to use the MDNS for the network
  * @param _mdnsName string to store the local name for mdns
  */
-ESP8266WiFi::ESP8266WiFi(bool _useMDNS, String _mdnsName) : m_useMDNS(_useMDNS), m_mdnsName(_mdnsName), m_alive(false) {
+ESP8266WiFi::ESP8266WiFi(bool _useMDNS, String _mdnsName) : m_alive(false), m_useMDNS(_useMDNS), m_mdnsName(_mdnsName) {
 
 }
 

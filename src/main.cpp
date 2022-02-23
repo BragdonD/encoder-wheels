@@ -19,7 +19,7 @@ motor *motorA, *motorB; ///Both motors
 captor *captorA, *captorB; ///Both Captors
 SimpleTimer SpeedPrinting_timer; ///Timer for speed calcul
 
-ESP8266WiFi wifis(true, "squad1063");
+ESP8266WiFi wifis(true, MDNS_NAME);
 
 ///Declaration of the function
 void IRAM_ATTR ISR_IncreaseCaptorBCount();
