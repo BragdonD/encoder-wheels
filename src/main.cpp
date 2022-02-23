@@ -10,6 +10,7 @@
  */
 #include <Arduino.h>
 #include <SimpleTimer.h>
+#include "connection.h"
 #include "robot.h"
 #include "motor.h"
 
@@ -17,6 +18,8 @@
 motor *motorA, *motorB; ///Both motors
 captor *captorA, *captorB; ///Both Captors
 SimpleTimer SpeedPrinting_timer; ///Timer for speed calcul
+
+ESP8266WiFi wifis(true, "squad1063");
 
 ///Declaration of the function
 void IRAM_ATTR ISR_IncreaseCaptorBCount();
@@ -26,6 +29,9 @@ void printSpeedMotors();
 void setup() {
   ///Start the communication series with a 115200 baudrates which is the basic baudrate for ESP8266 cards
   Serial.begin( 115200UL ); 
+
+  ///Setup the multiple wifi written in secret.h
+  wifis.setup();
   
   ///Initialisation of every pin as INPUT or OUTPUT
   pinMode( MOTOR1_DIR_PIN, OUTPUT );
@@ -53,12 +59,7 @@ void setup() {
 
 void loop() {
   SpeedPrinting_timer.run(); ///Need to be called to make the timer works
-
-  MooveForward(motorB, 255.0f);
-  MooveForward(motorA, 255.0f);
-
-  Moove(*motorA);
-  Moove(*motorB);
+  wifis.run();
 }
 
 /**
