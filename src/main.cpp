@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <SimpleTimer.h>
 #include "connection.h"
+#include "ws.h"
 #include "robot.h"
 #include "motor.h"
 
@@ -20,6 +21,7 @@ captor *captorA, *captorB; ///Both Captors
 SimpleTimer SpeedPrinting_timer; ///Timer for speed calcul
 
 ESP8266WiFi wifis(true, MDNS_NAME);
+WebServer server(100);
 
 ///Declaration of the function
 void IRAM_ATTR ISR_IncreaseCaptorBCount();
@@ -32,6 +34,8 @@ void setup() {
 
   ///Setup the multiple wifi written in secret.h
   wifis.setup();
+  
+  server.setup();
   
   ///Initialisation of every pin as INPUT or OUTPUT
   pinMode( MOTOR1_DIR_PIN, OUTPUT );
@@ -58,8 +62,9 @@ void setup() {
 }
 
 void loop() {
-  SpeedPrinting_timer.run(); ///Need to be called to make the timer works
+  ///SpeedPrinting_timer.run(); ///Need to be called to make the timer works
   wifis.run();
+  server.run();
 }
 
 /**

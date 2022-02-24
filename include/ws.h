@@ -1,8 +1,10 @@
-#if !defined(WEBSERVER_H)
-#define WEBSERVER_H
+#if !defined(WS_H)
+#define WS_H
 
+#include <ESP8266WiFi.h>
+#include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
-
+#include <LittleFS.h>
 class WebServer
 {
     public:
@@ -11,6 +13,7 @@ class WebServer
 
         void setup();
         void run();
+        static String processor(const String& var);
 
         void notifyClients(String &data);
         void initWS();
@@ -23,5 +26,6 @@ class WebServer
 
 void handleWSMessage(void* arg, uint8_t *data, size_t len);
 void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
+
 
 #endif // WEBSERVER_H

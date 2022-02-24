@@ -1,4 +1,4 @@
-#include "webServer.h"
+#include "ws.h"
 
 /**
  * @brief Construct a new Web Server:: Web Server object
@@ -22,10 +22,15 @@ WebServer::~WebServer() {
  * 
  */
 void WebServer::setup() {
+    LittleFS.begin();
+
     initWS();
 
     //Setup all the path
-    
+    m_server.on("/", [](AsyncWebServerRequest *request) {
+        Serial.println("/ ressource asked");
+        request->send(LittleFS, "/index.html", String(), false);
+    });
 
     m_server.begin();
 }
@@ -36,6 +41,10 @@ void WebServer::setup() {
  */
 void WebServer::run() {
     m_ws.cleanupClients();
+}
+
+String WebServer::processor(const String& var) {
+    return "temp";
 }
 
 /**
