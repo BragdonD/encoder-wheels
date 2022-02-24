@@ -1,0 +1,70 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+$light-background: #53e3a6;
+$dark-background: #48b8b6;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-weight: 400;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;    
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(top left, $dark-background 0%, $light-background 100%);
+    
+    .container {
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        h1 {
+            font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            font-weight: 300;
+            font-size: 3em;
+            font-style: normal;
+            padding: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            input {
+                margin: 10px 0;
+                padding: 15px;
+                background-color: rgba($color: #ffffff, $alpha: 0.3);
+                border: rgba($color: #ffffff, $alpha: 0.6) 1px solid;
+                border-radius: 5px;
+                color: #000;
+                text-align: center;
+                font-size: 1em;
+            }
+
+            input[type=submit]{
+                background-color: #fff;
+                color: rgb(90, 90, 90);
+            }
+
+            input[type=submit]:hover {
+                cursor: pointer;
+                background-color: rgba($color: #ffffff, $alpha: 0.6);
+            }
+        }
+    }
+}
