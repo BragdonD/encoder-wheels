@@ -4,49 +4,77 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motor Control</title>
+    <title>Motor Control - Squad 1063</title>
     <script src="./index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div>
+    <script type="text/javascript">
+        window.addEventListener("load", onLoad);
+    </script>
+    <div class="wrapper">
         <div class="grid">
             <div id="left" class="container">
                 <div class="input-wrapper">
                     <input type="range" name="left-motor-speed" min="0" max="255">
-                    <label for="left-motor-speed">Speed</label>
-                </div>
-                <div class="value-wrapper">
-                    <p id="left-number" class="number">
-
-                    </p>
-                </div>
-                <div class="on-off-wrapper">
-                    <div class="button-wrapper">
+                    <div id="left-input-container" class="off">
                         <button id="left-on" class="on">On</button>
                         <button id="left-off" class="off">Off</button>
                     </div>
+                    <script type="text/javascript">
+                        let leftDivButtonContainer = document.getElementById("left-input-container");
+                        let state = false;
+
+                        function toggle(e) {
+                            state = !state;
+                            if ( state ) {
+                                leftDivButtonContainer.classList.remove("off");
+                                leftDivButtonContainer.classList.add("on");
+                            }
+                            else {
+                                leftDivButtonContainer.classList.add("off");
+                                leftDivButtonContainer.classList.remove("on");
+                            }
+                        }
+                        
+                        document.getElementById("left-off").addEventListener("click", toggle);
+                        document.getElementById("left-on").addEventListener("click", toggle);
+                    </script>
                 </div>
             </div>
             <div id="right" class="container">
                 <div class="input-wrapper">
                     <input type="range" name="right-motor-speed" min="0" max="255">
-                    <label for="left-motor-speed">Speed</label>
-                </div>
-                <div class="value-wrapper">
-                    <p id="right-number" class="number">
-
-                    </p>
-                </div>
-                <div class="on-off-wrapper">
-                    <div class="button-wrapper">
+                    <div id="right-input-container" class="off">
                         <button id="right-on" class="on">On</button>
                         <button id="right-off" class="off">Off</button>
                     </div>
+                    <script type="text/javascript">
+                        let rightDivButtonContainer = document.getElementById("right-input-container");
+                        let state2 = false;
+
+                        function toggle2(e) {
+                            state2 = !state2;
+                            if ( state2 ) {
+                                rightDivButtonContainer.classList.remove("off");
+                                rightDivButtonContainer.classList.add("on");
+                            }
+                            else {
+                                rightDivButtonContainer.classList.add("off");
+                                rightDivButtonContainer.classList.remove("on");
+                            }
+                        }
+                        
+                        document.getElementById("right-off").addEventListener("click", toggle2);
+                        document.getElementById("right-on").addEventListener("click", toggle2);
+                    </script>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        document.getElementById("left-on").addEventListener("click", sendMessage);
+    </script>
 </body>
 </html>

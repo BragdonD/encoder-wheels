@@ -97,6 +97,42 @@ void WebServer::setup() {
         }
     });
 
+     ///index css file path
+    m_server.on("/index.css", HTTP_GET, [](AsyncWebServerRequest *request) {
+        Serial.println("get /index.css asked");
+        request->send(LittleFS, "./index.css", "text/css");
+    });
+
+    ///index css.map file path
+    m_server.on("/index.css.map", HTTP_GET, [](AsyncWebServerRequest *request) {
+        Serial.println("get /index.css.map asked");
+        request->send(LittleFS, "./index.css.map", "text/css");
+    });
+
+    ///index scss file path
+    m_server.on("/index.scss", HTTP_GET, [](AsyncWebServerRequest *request) {
+        Serial.println("get /index.scss asked");
+        request->send(LittleFS, "./index.scss", "text/css");
+    });
+
+    ///index js file path
+    m_server.on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request) {
+        Serial.println("get /index.js asked");
+        request->send(LittleFS, "./index.js", "text/javascript");
+    });
+
+    ///index js.map file path
+    m_server.on("/index.js.map", HTTP_GET, [](AsyncWebServerRequest *request) {
+        Serial.println("get /index.js.map asked");
+        request->send(LittleFS, "./index.js.map", "text/javascript");
+    });
+
+    ///index ts file path
+    m_server.on("/index.ts", HTTP_GET, [](AsyncWebServerRequest *request) {
+        Serial.println("get /index.ts asked");
+        request->send(LittleFS, "./index.ts", "text/javascript");
+    });
+
     ///Handle Cors request
     m_server.onNotFound([](AsyncWebServerRequest *request) {
         if (request->method() == HTTP_OPTIONS) {

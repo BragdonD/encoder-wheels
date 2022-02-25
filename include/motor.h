@@ -18,6 +18,10 @@
 #define FORWARD 0x1
 #define BACKWARD 0x0
 
+///define state
+#define ON 0x1
+#define OFF 0x0
+
 ///Define motors pin
 #define MOTOR1_DIR_PIN 0U ///D3
 #define MOTOR2_DIR_PIN 2U ///D4
