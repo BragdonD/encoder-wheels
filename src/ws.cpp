@@ -78,7 +78,23 @@ void WebServer::setup() {
     ///Root path
     m_server.on("/", [this](AsyncWebServerRequest *request) {
         Serial.println("get /index.html asked");
-        request->send(LittleFS, "./index.html", String(), false);
+
+        String token = request->header( "Cookie" );
+        int index = token.indexOf( "ACCESS=" );
+
+        if( index != -1) {
+            token.remove( index, strlen("ACCESS=") );
+            if( checkJWT(token) ) {
+                Serial.printf("Accord access at /index.html to %s\n", request->client()->localIP().toString().c_str());
+                request->send(LittleFS, "./index.html", String(), false);
+            }
+            else {
+                request->redirect("/login");
+            }
+        }
+        else {
+            request->redirect("/login");
+        }
     });
 
     ///Handle Cors request
@@ -89,6 +105,7 @@ void WebServer::setup() {
             request->send(404);
         }
     });
+
     ///Handler Json for the post method on login path
     AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler("/login", [this](AsyncWebServerRequest *request, JsonVariant &json) {
         JsonObject jsonObj = json.as<JsonObject>(); ///transform the data in a Json Object
