@@ -61,13 +61,15 @@ void MooveBackward (motor *x, float speed) {
  * @param x the motor containing all the informations
  */
 void Moove (motor x) {
-    if(x.direction == FORWARD) {
-        digitalWrite(x.dir_pin, HIGH);
+    if(x.state == ON) {
+        if(x.direction == FORWARD) {
+            digitalWrite(x.dir_pin, HIGH);
+        }
+        else if(x.direction == BACKWARD) {
+            digitalWrite(x.dir_pin, LOW);
+        }
+        analogWrite(x.spd_pin, x.speed);
     }
-    else if(x.direction == BACKWARD) {
-        digitalWrite(x.dir_pin, LOW);
-    }
-    analogWrite(x.spd_pin, x.speed);
 }
 
 /**
@@ -77,9 +79,29 @@ void Moove (motor x) {
  * @param str name of the motor
  */
 void PrintMotorSpeed(motor x, const char* str) {
-    Serial.print("Speed Motor ");
-    Serial.print(str);
-    Serial.print(" : ");
-    Serial.print( x.speed );
-    Serial.println("km.h^(-1)");
+    #if DEBUG
+        Serial.print("Speed Motor ");
+        Serial.print(str);
+        Serial.print(" : ");
+        Serial.print( x.speed );
+        Serial.println("km.h^(-1)");
+    #endif
+}
+
+/**
+ * @brief Function to turn on the motor
+ * 
+ * @param x motor to change state value
+ */
+void ActivateMotor (motor *x) {
+    x->state = ON;
+}
+
+/**
+ * @brief Function to turn off the motor
+ * 
+ * @param x motor to change state value
+ */
+void DeactivateMotor (motor *x) {
+    x->state = OFF;
 }

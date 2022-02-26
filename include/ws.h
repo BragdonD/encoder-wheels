@@ -10,6 +10,7 @@
 #include <ArduinoJWT.h>
 #include <vector>
 #include "secret.h"
+#include "settings.h"
 
 class WebServer
 {
@@ -25,7 +26,6 @@ class WebServer
         bool checkJWT(String &JWT);
         bool checkSecurity(String &ssid, String &password);
 
-        void notifyClients(String &data);
         void initWS();
 
     private:
@@ -36,8 +36,8 @@ class WebServer
         std::vector<String> m_JWT;       
 };
 
-void handleWSMessage(void* arg, uint8_t *data, size_t len);
-void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
-
+void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socket);
+void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
+void notifyClients(String &data, AsyncWebSocket *ws);
 
 #endif // WEBSERVER_H

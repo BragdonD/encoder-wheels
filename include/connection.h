@@ -5,6 +5,7 @@
 #include <ESP8266WiFiMulti.h>
 #include <ESP8266mDNS.h>
 #include "secret.h"
+#include "settings.h"
 
 class ESP8266WiFi {
     public:

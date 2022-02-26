@@ -35,49 +35,65 @@ void WebServer::setup() {
     ///Setup all the path of the server
     ///Login path
     m_server.on("/login", HTTP_GET, [this](AsyncWebServerRequest *request) {
-        Serial.println("get /login.html asked");
+        #if DEBUG
+            Serial.println("get /login.html asked");
+        #endif
         request->send(LittleFS, "./login.html", String(), false);
     });
 
     ///Login css file path
     m_server.on("/login.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /login.css asked");
+        #if DEBUG
+            Serial.println("get /login.css asked");
+        #endif
         request->send(LittleFS, "./login.css", "text/css");
     });
 
     ///Login css.map file path
     m_server.on("/login.css.map", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /login.css.map asked");
+        #if DEBUG
+            Serial.println("get /login.css.map asked");
+        #endif
         request->send(LittleFS, "./login.css.map", "text/css");
     });
 
     ///Login scss file path
     m_server.on("/login.scss", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /login.scss asked");
+        #if DEBUG
+            Serial.println("get /login.scss asked");
+        #endif
         request->send(LittleFS, "./login.scss", "text/css");
     });
 
     ///Login js file path
     m_server.on("/login.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /login.js asked");
+        #if DEBUG
+            Serial.println("get /login.js asked");
+        #endif
         request->send(LittleFS, "./login.js", "text/javascript");
     });
 
     ///Login js.map file path
     m_server.on("/login.js.map", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /login.js.map asked");
+        #if DEBUG
+            Serial.println("get /login.js.map asked");
+        #endif
         request->send(LittleFS, "./login.js.map", "text/javascript");
     });
 
     ///Login ts file path
     m_server.on("/login.ts", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /login.ts asked");
+        #if DEBUG
+            Serial.println("get /login.ts asked");
+        #endif
         request->send(LittleFS, "./login.ts", "text/javascript");
     });
 
     ///Root path
     m_server.on("/", [this](AsyncWebServerRequest *request) {
-        Serial.println("get /index.html asked");
+        #if DEBUG
+            Serial.println("get /index.html asked");
+        #endif
 
         String token = request->header( "Cookie" );
         int index = token.indexOf( "ACCESS=" );
@@ -85,7 +101,9 @@ void WebServer::setup() {
         if( index != -1) {
             token.remove( index, strlen("ACCESS=") );
             if( checkJWT(token) ) {
-                Serial.printf("Accord access at /index.html to %s\n", request->client()->localIP().toString().c_str());
+                #if DEBUG
+                    Serial.printf("Accord access at /index.html to %s\n", request->client()->localIP().toString().c_str());
+                #endif
                 request->send(LittleFS, "./index.html", String(), false);
             }
             else {
@@ -99,37 +117,49 @@ void WebServer::setup() {
 
      ///index css file path
     m_server.on("/index.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /index.css asked");
+        #if DEBUG
+            Serial.println("get /index.css asked");
+        #endif
         request->send(LittleFS, "./index.css", "text/css");
     });
 
     ///index css.map file path
     m_server.on("/index.css.map", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /index.css.map asked");
+        #if DEBUG
+            Serial.println("get /index.css.map asked");
+        #endif
         request->send(LittleFS, "./index.css.map", "text/css");
     });
 
     ///index scss file path
     m_server.on("/index.scss", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /index.scss asked");
+        #if DEBUG
+            Serial.println("get /index.scss asked");
+        #endif
         request->send(LittleFS, "./index.scss", "text/css");
     });
 
     ///index js file path
     m_server.on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /index.js asked");
+        #if DEBUG
+            Serial.println("get /index.js asked");
+        #endif
         request->send(LittleFS, "./index.js", "text/javascript");
     });
 
     ///index js.map file path
     m_server.on("/index.js.map", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /index.js.map asked");
+        #if DEBUG
+            Serial.println("get /index.js.map asked");
+        #endif
         request->send(LittleFS, "./index.js.map", "text/javascript");
     });
 
     ///index ts file path
     m_server.on("/index.ts", HTTP_GET, [](AsyncWebServerRequest *request) {
-        Serial.println("get /index.ts asked");
+        #if DEBUG
+            Serial.println("get /index.ts asked");
+        #endif
         request->send(LittleFS, "./index.ts", "text/javascript");
     });
 
@@ -250,45 +280,77 @@ bool WebServer::checkSecurity(String &ssid, String &password) {
  * @param data 
  * @param len 
  */
-void handleWSMessage(void* arg, uint8_t *data, size_t len) {
+void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socket) {
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
 
     if( info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         data[len] = 0;
-        ///A changer mais test comment le json est handle
-        Serial.println((char*)data);
+
+        DynamicJsonDocument doc(1024);
+        deserializeJson(doc, (char*)data);
+        JsonObject json = doc.as<JsonObject>();
+
+        if(json["motorA"]["speed"]) {
+            #if DEBUG
+                Serial.println("modif speed motor A");
+            #endif
+        }
+        else if(json["motorA"]["state"]) {
+            #if DEBUG
+                Serial.println("modif state motor A");
+            #endif
+        }
+        else if(json["motorB"]["speed"]) {
+            #if DEBUG
+                Serial.println("modif speed motor B");
+            #endif
+        }
+        else if(json["motorB"]["state"]) {
+            #if DEBUG
+                Serial.println("modif state motor B");
+            #endif
+        }
+        String Data;
+        serializeJson(json, Data);
+        notifyClients(Data, socket);
     }
 }
 
 /**
  * @brief 
  * 
+ * @param data 
+ * @param ws 
  */
-void WebServer::notifyClients(String &data) {
-    m_ws.textAll(data);
+void notifyClients(String &data, AsyncWebSocket *ws) {
+    ws->textAll(data);
 }
 
 /**
  * @brief 
  * 
- * @param server 
+ * @param ws 
  * @param client 
  * @param type 
  * @param arg 
  * @param data 
  * @param len 
  */
-void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
     switch (type)
     {
     case WS_EVT_CONNECT:
-        Serial.printf( "New client %u connected from %s\n", client->id(), client->remoteIP().toString().c_str() );
+        #if DEBUG
+            Serial.printf( "New client %u connected from %s\n", client->id(), client->remoteIP().toString().c_str() );
+        #endif
         break;
     case WS_EVT_DISCONNECT:
-        Serial.printf("WebSocket client #%u disconnected\n", client->id());
+        #if DEBUG
+            Serial.printf("WebSocket client #%u disconnected\n", client->id());
+        #endif
         break;
     case WS_EVT_DATA:
-        handleWSMessage(arg, data, len);
+        handleWSMessage(arg, data, len, ws);
         break;
     case WS_EVT_PONG:
     case WS_EVT_ERROR:

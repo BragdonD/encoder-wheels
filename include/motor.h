@@ -13,6 +13,7 @@
 
 #include <Arduino.h>
 #include <string>
+#include "settings.h"
 
 ///define direction
 #define FORWARD 0x1
@@ -33,6 +34,7 @@ typedef struct motor
     uint8_t dir_pin;    //direction pin (D3, D4)
     uint8_t spd_pin;    //speed pin (D1, D2)
     uint8_t direction;  //direction of the motor (FORWARD, BACKWARD)
+    uint8_t state; //state of the motor (ON, OFF)
     volatile float speed;        //rotation speed
 }t_motor, motor;
 
@@ -41,5 +43,7 @@ void MooveForward (motor *x, float speed);
 void MooveBackward (motor *x, float speed);
 void Moove (motor x);
 void PrintMotorSpeed(motor x, const char* str);
+void ActivateMotor (motor *x);
+void DeactivateMotor (motor *x);
 
 #endif // MOTOR_H

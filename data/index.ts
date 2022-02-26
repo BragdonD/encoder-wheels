@@ -28,6 +28,57 @@ function onLoad(e : Event) : void {
 }
 
 function sendMessage(e : Event) : void {
+    e.preventDefault();
+    let elem : HTMLElement = <HTMLElement>e.target;
+    let toSend : Object;
+    
+    switch (elem.id) {
+        case "right-off":
+            toSend = {
+                motorB: {
+                    state: "off",
+                }
+            }
+            break;
+        case "right-on":
+            toSend = {
+                motorB: {
+                    state: "on",
+                }
+            }
+            break;
+        case "left-off":
+            toSend = {
+                motorA: {
+                    state: "off",
+                },
+            }
+            break;
+        case "left-on":
+            toSend = {
+                motorA: {
+                    state: "on",
+                },
+            }
+            break;
+        case "right-motor-speed":
+            toSend = {
+                motorB: {
+                    speed: (<HTMLInputElement>elem).value,
+                },
+            }
+            break;
+        case "left-motor-speed":
+            toSend = {
+                motorA: {
+                    speed: (<HTMLInputElement>elem).value,
+                },
+            }
+            break;
+    
+        default:
+            break;
+    }
     console.log("Sending message");
-    websocket.send(JSON.stringify({case: "ok"}));
+    websocket.send(JSON.stringify(toSend));
 }

@@ -66,7 +66,9 @@ void ESP8266WiFi::setMdnsName(String name) {
         m_mdnsName = name;
     }
     else {
-        throw std::invalid_argument("error mdns name can't be null string.");
+        #if DEBUG
+            throw std::invalid_argument("error mdns name can't be null string.");
+        #endif
     }
     
 }
@@ -96,7 +98,9 @@ void ESP8266WiFi::setup() {
     }
     ///Init MDNS
     if( !MDNS.begin( getMdnsName() ) ) {
-        Serial.println("Error setting up MDNS.");
+        #if DEBUG
+            Serial.println("Error setting up MDNS.");
+        #endif
         setMDNS( false );
     }
 }
@@ -112,14 +116,20 @@ void ESP8266WiFi::run() {
     if( m_wifis.run() != WL_CONNECTED) {
         if ( getState() ) {
             setState( false );
-            Serial.print("Looking for WiFi ");
+            #if DEBUG
+                Serial.print("Looking for WiFi ");
+            #endif
         }
-        Serial.print(".");
+        #if DEBUG
+            Serial.print(".");
+        #endif
         delay(500);
     }
     else if( !getState() ) {
         setState( true );
-        Serial.printf("Connected to %s\nLocal Ip : %s\n", WiFi.SSID().c_str(), WiFi.localIP().toString().c_str() );
+        #if DEBUG
+            Serial.printf("Connected to %s\nLocal Ip : %s\n", WiFi.SSID().c_str(), WiFi.localIP().toString().c_str() );
+        #endif
     }
     ///Run MDNS
     if( getMDNS() ) {
