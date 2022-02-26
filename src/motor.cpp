@@ -25,6 +25,7 @@ motor *InitMotor (uint8_t dir_pin, uint8_t  spd_pin) {
     x->spd_pin = spd_pin;
     x->direction = FORWARD;
     x->speed = 0;
+    x->wantedSpeed = 0;
     
     return x;
 }
@@ -38,7 +39,7 @@ motor *InitMotor (uint8_t dir_pin, uint8_t  spd_pin) {
 void MooveForward (motor *x, float speed) {
     x->direction = FORWARD;
     if(speed >= 0) {
-        x->speed = speed;
+        x->wantedSpeed = speed;
     }
 }
 
@@ -51,7 +52,7 @@ void MooveForward (motor *x, float speed) {
 void MooveBackward (motor *x, float speed) {
     x->direction = BACKWARD;
     if(speed >= 0) {
-        x->speed = speed;
+        x->wantedSpeed = speed;
     }
 }
 
@@ -68,7 +69,7 @@ void Moove (motor x) {
         else if(x.direction == BACKWARD) {
             digitalWrite(x.dir_pin, LOW);
         }
-        analogWrite(x.spd_pin, x.speed);
+        analogWrite(x.spd_pin, x.wantedSpeed);
     }
 }
 

@@ -35,6 +35,7 @@ typedef struct motor
     uint8_t spd_pin;    //speed pin (D1, D2)
     uint8_t direction;  //direction of the motor (FORWARD, BACKWARD)
     uint8_t state; //state of the motor (ON, OFF)
+    volatile float wantedSpeed;  //rotation speed wanted
     volatile float speed;        //rotation speed
 }t_motor, motor;
 

@@ -294,22 +294,37 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
             #if DEBUG
                 Serial.println("modif speed motor A");
             #endif
+            motorA->wantedSpeed = json["motorA"]["speed"];
         }
         else if(json["motorA"]["state"]) {
             #if DEBUG
                 Serial.println("modif state motor A");
             #endif
+            if(json["motorA"]["state"] == "on") {
+                motorA->state = ON;
+            }
+            else {
+                motorA->state = OFF;
+            }
         }
         else if(json["motorB"]["speed"]) {
             #if DEBUG
                 Serial.println("modif speed motor B");
             #endif
+            motorB->wantedSpeed = json["motorB"]["speed"];
         }
         else if(json["motorB"]["state"]) {
             #if DEBUG
                 Serial.println("modif state motor B");
             #endif
+            if(json["motorB"]["state"] == "on") {
+                motorB->state = ON;
+            }
+            else {
+                motorB->state = OFF;
+            }
         }
+
         String Data;
         serializeJson(json, Data);
         notifyClients(Data, socket);
