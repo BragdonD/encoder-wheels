@@ -11,6 +11,8 @@
 #include <vector>
 #include "secret.h"
 #include "settings.h"
+#include "motor.h"
+#include "robot.h"
 
 class WebServer
 {
@@ -33,7 +35,11 @@ class WebServer
         AsyncWebServer m_server;
         AsyncWebSocket m_ws;
         ArduinoJWT m_encoder;
-        std::vector<String> m_JWT;       
+        std::vector<String> m_JWT;
+        motor *m_motorA;
+        motor *m_motorB;  
+        captor *m_captorA;
+        captor *m_captorB;    
 };
 
 void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socket);

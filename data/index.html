@@ -24,38 +24,12 @@
                         <button id="left-off" class="off">Off</button>
                     </div>
                     <script type="text/javascript">
-                        let leftDivButtonContainer = document.getElementById("left-input-container");
-                        let state = false;
-
-                        function toggle(e) {
-                            state = !state;
-                            if ( state ) {
-                                leftDivButtonContainer.classList.remove("off");
-                                leftDivButtonContainer.classList.add("on");
-                            }
-                            else {
-                                document.getElementById("left-motor-speed").value = 0;
-                                updateLeftRangeValue(0);
-                                leftDivButtonContainer.classList.add("off");
-                                leftDivButtonContainer.classList.remove("on");
-                            }
-                        }
-                        
                         document.getElementById("left-off").addEventListener("click", toggle);
                         document.getElementById("left-off").addEventListener("click", sendMessage);
                         document.getElementById("left-on").addEventListener("click", toggle);
                         document.getElementById("left-on").addEventListener("click", sendMessage);
                     </script>
-                    <script type="text/javascript">
-                        const onChangeLeft = (e) => {
-                            sendMessage(e);
-                            updateLeftRangeValue(e.target.value);
-                        }
 
-                        const updateLeftRangeValue = (value) => {
-                            document.getElementById("left-range-value").innerHTML = value + " km/h";
-                        };
-                    </script>
                 </div>
             </div>
             <div id="right" class="container">
@@ -67,37 +41,10 @@
                         <button id="right-off" class="off">Off</button>
                     </div>
                     <script type="text/javascript">
-                        let rightDivButtonContainer = document.getElementById("right-input-container");
-                        let state2 = false;
-
-                        function toggle2(e) {
-                            state2 = !state2;
-                            if ( state2 ) {
-                                rightDivButtonContainer.classList.remove("off");
-                                rightDivButtonContainer.classList.add("on");
-                            }
-                            else {
-                                document.getElementById("right-motor-speed").value = 0;
-                                updateRightRangeValue(0);
-                                rightDivButtonContainer.classList.add("off");
-                                rightDivButtonContainer.classList.remove("on");
-                            }
-                        }
-                        
                         document.getElementById("right-off").addEventListener("click", toggle2);
                         document.getElementById("right-off").addEventListener("click", sendMessage);
                         document.getElementById("right-on").addEventListener("click", toggle2);
                         document.getElementById("right-on").addEventListener("click", sendMessage);
-                    </script>
-                    <script type="text/javascript">
-                        const onChangeRight = (e) => {
-                            sendMessage(e);
-                            updateRightRangeValue(e.target.value);
-                        }
-                        
-                        const updateRightRangeValue = (value) => {
-                            document.getElementById("right-range-value").innerHTML = value + " km/h";
-                        };
                     </script>
                 </div>
             </div>

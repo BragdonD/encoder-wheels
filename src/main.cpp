@@ -32,6 +32,7 @@ void setup() {
   ///Start the communication series with a 115200 baudrates which is the basic baudrate for ESP8266 cards
   Serial.begin( 115200UL ); 
 
+
   ///Setup the multiple wifi written in secret.h
   wifis.setup();
   
