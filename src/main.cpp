@@ -9,18 +9,10 @@
  * 
  */
 #include <Arduino.h>
-#include <SimpleTimer.h>
-#include "connection.h"
 #include "ws.h"
-#include "robot.h"
-#include "motor.h"
+#include "global.h"
 
-///Variable Declaration
-motor *motorA, *motorB; ///Both motors
-captor *captorA, *captorB; ///Both Captors
-SimpleTimer SpeedPrinting_timer; ///Timer for speed calcul
-
-ESP8266WiFi wifis(true, MDNS_NAME);
+///variable Declaration
 WebServer server(100);
 
 ///Declaration of the function
