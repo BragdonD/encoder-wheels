@@ -1,7 +1,10 @@
 const gateway : string = "ws://squad1063.local:100/ws";
 let websocket : WebSocket;
+
 let state : boolean = false;
 let state2 : boolean = false;
+let toggleBtn : boolean = true;
+let toggleBtn2 : boolean = true;
 
 function InitWS() : void {
     console.log("Opening a webSocket");
@@ -161,3 +164,37 @@ const onChangeRight = (e : Event) => {
 const updateRightRangeValue = (value : number) => {
     document.getElementById("right-range-value").innerHTML = value + " km/h";
 };
+
+function toggle3(e : Event) : void {
+    let leftDivButtonToggle = document.getElementById("toggle-left-direction");
+
+    toggleBtn = !toggleBtn;
+
+    if ( toggleBtn ) {
+        leftDivButtonToggle.classList.remove("backwards");
+        leftDivButtonToggle.classList.add("forwards");
+        leftDivButtonToggle.innerHTML = "FORWARDS";
+    }
+    else {
+        leftDivButtonToggle.classList.add("backwards");
+        leftDivButtonToggle.classList.remove("forwards");
+        leftDivButtonToggle.innerHTML = "BACKWARDS";
+    }
+}
+
+function toggle4(e : Event) : void {
+    let rightDivButtonToggle = document.getElementById("toggle-right-direction");
+
+    toggleBtn2 = !toggleBtn2;
+
+    if ( toggleBtn2 ) {
+        rightDivButtonToggle.classList.remove("backwards");
+        rightDivButtonToggle.classList.add("forwards");
+        rightDivButtonToggle.innerHTML = "FORWARDS";
+    }
+    else {
+        rightDivButtonToggle.classList.add("backwards");
+        rightDivButtonToggle.classList.remove("forwards");
+        rightDivButtonToggle.innerHTML = "BACKWARDS";
+    }
+}

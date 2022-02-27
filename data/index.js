@@ -2,6 +2,8 @@ var gateway = "ws://squad1063.local:100/ws";
 var websocket;
 var state = false;
 var state2 = false;
+var toggleBtn = true;
+var toggleBtn2 = true;
 function InitWS() {
     console.log("Opening a webSocket");
     websocket = new WebSocket(gateway);
@@ -18,7 +20,6 @@ function onClose(e) {
 function onMessage(e) {
     console.log("Received message from WebSocket");
     var data = JSON.parse(e.data);
-    console.log(data);
     if (data["motorA"] !== undefined) {
         if (data["motorA"]["speed"] !== undefined) {
             var range = document.getElementById("left-motor-speed");
@@ -144,4 +145,32 @@ var onChangeRight = function (e) {
 var updateRightRangeValue = function (value) {
     document.getElementById("right-range-value").innerHTML = value + " km/h";
 };
+function toggle3(e) {
+    var leftDivButtonToggle = document.getElementById("toggle-left-direction");
+    toggleBtn = !toggleBtn;
+    if (toggleBtn) {
+        leftDivButtonToggle.classList.remove("backwards");
+        leftDivButtonToggle.classList.add("forwards");
+        leftDivButtonToggle.innerHTML = "FORWARDS";
+    }
+    else {
+        leftDivButtonToggle.classList.add("backwards");
+        leftDivButtonToggle.classList.remove("forwards");
+        leftDivButtonToggle.innerHTML = "BACKWARDS";
+    }
+}
+function toggle4(e) {
+    var rightDivButtonToggle = document.getElementById("toggle-right-direction");
+    toggleBtn2 = !toggleBtn2;
+    if (toggleBtn2) {
+        rightDivButtonToggle.classList.remove("backwards");
+        rightDivButtonToggle.classList.add("forwards");
+        rightDivButtonToggle.innerHTML = "FORWARDS";
+    }
+    else {
+        rightDivButtonToggle.classList.add("backwards");
+        rightDivButtonToggle.classList.remove("forwards");
+        rightDivButtonToggle.innerHTML = "BACKWARDS";
+    }
+}
 //# sourceMappingURL=index.js.map
