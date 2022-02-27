@@ -20,8 +20,8 @@
                     <input type="range" id="left-motor-speed" name="left-motor-speed" value="0" min="0" max="255" onchange="onChangeLeft(event)" onmousemove="updateLeftRangeValue(this.value)">
                     <h2 id="left-range-value">0 km/h</h2>
                     <div id="left-input-container" class="off">
-                        <button id="left-on" class="on">On</button>
-                        <button id="left-off" class="off">Off</button>
+                        <button id="left-on" class="on">ON</button>
+                        <button id="left-off" class="off">OFF</button>
                     </div>
                     <script type="text/javascript">
                         document.getElementById("left-off").addEventListener("click", toggle);
@@ -29,7 +29,9 @@
                         document.getElementById("left-on").addEventListener("click", toggle);
                         document.getElementById("left-on").addEventListener("click", sendMessage);
                     </script>
-
+                    <div>
+                        <button id="toggle-left-direction">FORWARDS</button>
+                    </div>
                 </div>
             </div>
             <div id="right" class="container">
@@ -37,8 +39,8 @@
                     <input type="range" id="right-motor-speed"  name="right-motor-speed" value="0" min="0" max="255" onchange="onChangeRight(event)"  onmousemove="updateRightRangeValue(this.value)">
                     <h2 id="right-range-value">0 km/h</h2>
                     <div id="right-input-container" class="off">
-                        <button id="right-on" class="on">On</button>
-                        <button id="right-off" class="off">Off</button>
+                        <button id="right-on" class="on">ON</button>
+                        <button id="right-off" class="off">OFF</button>
                     </div>
                     <script type="text/javascript">
                         document.getElementById("right-off").addEventListener("click", toggle2);
@@ -46,6 +48,9 @@
                         document.getElementById("right-on").addEventListener("click", toggle2);
                         document.getElementById("right-on").addEventListener("click", sendMessage);
                     </script>
+                    <div>
+                        <button id="toggle-right-direction">FORWARDS</button>
+                    </div>
                 </div>
             </div>
         </div>

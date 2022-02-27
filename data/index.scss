@@ -85,14 +85,19 @@ body {
                     background-color: rgba($color: #fff, $alpha: 0.2);
                 }
 
-                &.on{
+                &.on {
                     border-radius: 5px 0 0 5px;
                 }
 
-                &.off{
+                &.off {
                     border-radius: 0 5px 5px 0;
                 }
+
+                &#toggle-left-direction {
+                    border-radius: 5px;
+                }
             }
+
 
             &.on {
                 &::before{
