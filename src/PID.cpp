@@ -38,6 +38,21 @@ float PID::getCumulatedError ()
     return m_Cumulated_Error;
 }
 
+float PID::getKp ()
+{
+  return m_Kp;
+}
+
+float PID::getKi ()
+{
+  return m_Ki;
+}
+
+float PID::getKd ()
+{
+  return m_Kd;
+}
+
 void PID::subjugationFunction()
 {
   ///Calcul de l'erreur
@@ -46,5 +61,6 @@ void PID::subjugationFunction()
   Subjugation.setError( Subjugation.getConsigne() - Counter_of_hole_frequence);
   Subjugation.setCumulatedError (Subjugation.getCumulatedError() + Subjugation.getError());
 
-  
+  ///Regulateur P
+  motorA->speed = Subjugation.getKp() * Subjugation.getError(); 
 }
