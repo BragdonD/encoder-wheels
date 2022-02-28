@@ -13,6 +13,10 @@
 #include "global.h"
 
 ///variable Declaration
+motor *motorA, *motorB; ///Both motors
+captor *captorA, *captorB; ///Both Captors
+SimpleTimer SpeedPrinting_timer;
+ESP8266WiFi wifis(true, MDNS_NAME);
 WebServer server(100);
 
 ///Declaration of the function
@@ -23,7 +27,6 @@ void printSpeedMotors();
 void setup() {
   ///Start the communication series with a 115200 baudrates which is the basic baudrate for ESP8266 cards
   Serial.begin( 115200UL ); 
-
 
   ///Setup the multiple wifi written in secret.h
   wifis.setup();

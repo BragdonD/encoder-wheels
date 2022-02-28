@@ -11,6 +11,4 @@ extern motor *motorA, *motorB; ///Both motors
 extern captor *captorA, *captorB; ///Both Captors
 extern SimpleTimer SpeedPrinting_timer; ///Timer for speed calcul
 
-extern ESP8266WiFi wifis(true, MDNS_NAME);
-
 #endif // GLOBAL_H
