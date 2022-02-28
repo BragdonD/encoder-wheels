@@ -18,6 +18,9 @@
         <div class="grid">
             <div id="left" class="container">
                 <h1>Motor Left</h1>
+                <div id="left-serial-container" class="serial-wrapper">
+                    <canvas id="left-serial"></canvas>
+                </div>
                 <div class="input-wrapper">
                     <input type="range" id="left-motor-speed" name="left-motor-speed" value="0" min="0" max="255" onchange="onChangeLeft(event)" onmousemove="updateLeftRangeValue(this.value)">
                     <h2 id="left-range-value">0 km/h</h2>
@@ -37,8 +40,11 @@
                 </div>
             </div>
             <div id="right" class="container">
+                <h1>Motor Right</h1>
+                <div id="right-serial-container" class="serial-wrapper">
+                    <canvas id="right-serial"></canvas>
+                </div>
                 <div class="input-wrapper">
-                    <h1>Motor Right</h1>
                     <input type="range" id="right-motor-speed"  name="right-motor-speed" value="0" min="0" max="255" onchange="onChangeRight(event)"  onmousemove="updateRightRangeValue(this.value)">
                     <h2 id="right-range-value">0 km/h</h2>
                     <div id="right-input-container" class="off before">
@@ -60,6 +66,119 @@
     </div>
     <script type="text/javascript">
         document.getElementById("left-on").addEventListener("click", sendMessage);
+    </script>
+    <script type="text/javascript">
+        let counter = 0;
+        let counter2 = 0;
+        
+        let xValuesRight = [0];
+        let yValuesRight = [0];
+
+        let configRight = {
+            type: "line",
+            data: {
+                labels: xValuesRight,
+                datasets: [{
+                fill: false,
+                lineTension: 0,
+                pointRadius: 1,
+                backgroundColor: "#fff",
+                borderColor: "#fff",
+                data: yValuesRight,
+                }]
+            },
+            options: {
+                legend: {display: false},
+                scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                        fontSize: 10,
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                        fontSize: 10,
+                    }
+                }]
+            }
+            },
+            color: "#fff",
+        };
+
+        const chartRight = new Chart("right-serial", configRight);
+
+        function UpdateRightSerial(e) {
+            counter += 100;
+            xValuesRight.push(counter);
+            
+            yValuesRight.push(document.getElementById("right-motor-speed").value)
+            if(yValuesRight.length > 20) {
+                yValuesRight.shift();
+            }
+            if(xValuesRight.length > 20) {
+                xValuesRight.shift();
+            }
+            chartRight.update();
+        }
+
+        setInterval(UpdateRightSerial, 100);
+    </script>
+    <script type="text/javascript">      
+        let xValuesLeft = [0];
+        let yValuesLeft = [0];
+
+        let configLeft = {
+            type: "line",
+            data: {
+                labels: xValuesLeft,
+                datasets: [{
+                fill: false,
+                lineTension: 0,
+                pointRadius: 1,
+                backgroundColor: "#fff",
+                borderColor: "#fff",
+                data: yValuesLeft,
+                }]
+            },
+            options: {
+                legend: {display: false},
+                scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                        fontSize: 10,
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                        fontSize: 10,
+                    }
+                }]
+            }
+            },
+            color: "#fff",
+        };
+
+        const chartLeft = new Chart("left-serial", configLeft);
+
+        function UpdateLeftSerial(e) {
+            counter += 100;
+            xValuesLeft.push(counter);
+
+            yValuesLeft.push(document.getElementById("left-motor-speed").value);
+            if(yValuesLeft.length > 20) {
+                yValuesLeft.shift();
+            }
+            if(xValuesLeft.length > 20) {
+                xValuesLeft.shift();
+            }
+            chartLeft.update();
+        }
+
+        setInterval(UpdateLeftSerial, 100);
     </script>
 </body>
 </html>
