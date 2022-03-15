@@ -15,6 +15,7 @@ private:
     float m_Kp;
     float m_Ki;
     float m_Kd;
+    float m_LastError;
 public:
     PID(/* args */);
     ~PID();
@@ -22,8 +23,10 @@ public:
     void setCumulatedError (float);
     void setConsigne(float);
     void setError (float);
+    void setLastError (float);
     float getConsigne ();
     float getError ();
+    float getLastError ();
     float getCumulatedError ();
     float getKp ();
     float getKi ();

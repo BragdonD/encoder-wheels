@@ -14,6 +14,11 @@ float PID::getError ()
   return m_Error;
 }
 
+float PID::getLastError ()
+{
+  return m_LastError;
+}
+
 float PID::getConsigne ()
 {
   return m_Consigne;
@@ -22,6 +27,11 @@ float PID::getConsigne ()
 void PID::setError (float _Error)
 {
   m_Error = _Error;
+}
+
+void PID::setLastError (float _Error)
+{
+  m_LastError = _Error;
 }
 
 void PID::setCumulatedError (float _CumulatedError)
@@ -60,7 +70,18 @@ void PID::subjugationFunction()
   Counter_of_hole_frequence = (float)hole_frequence/(float)CAPTOR_HOLES_NB/29.f;
   Subjugation.setError( Subjugation.getConsigne() - Counter_of_hole_frequence);
   Subjugation.setCumulatedError (Subjugation.getCumulatedError() + Subjugation.getError());
+  Subjugation.setLastError(Subjugation.getError());
 
   ///Regulateur P
-  motorA->speed = Subjugation.getKp() * Subjugation.getError(); 
+  motorA->speed = Subjugation.getKp() * Subjugation.getError();
+  motorB->speed = Subjugation.getKp() * Subjugation.getError();
+
+  ///Regulateur PI 
+  motorA->speed = Subjugation.getKp() * Subjugation.getError() + Subjugation.getKi() * Subjugation.getCumulatedError() ;
+  motorB->speed = Subjugation.getKp() * Subjugation.getError() + Subjugation.getKi() * Subjugation.getCumulatedError() ;
+  
+  ///regulateur PID
+  motorA->speed = Subjugation.getKp() * Subjugation.getError() + Subjugation.getKi() * Subjugation.getCumulatedError() + Subjugation.getKd() * (Subjugation.getError() ,Subjugation.getLastError() );
+  motorB->speed = Subjugation.getKp() * Subjugation.getError() + Subjugation.getKi() * Subjugation.getCumulatedError() + Subjugation.getKd() * (Subjugation.getError() ,Subjugation.getLastError() );
+   
 }
