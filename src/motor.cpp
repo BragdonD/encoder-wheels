@@ -25,6 +25,8 @@ motor *InitMotor (uint8_t dir_pin, uint8_t  spd_pin) {
     x->spd_pin = spd_pin;
     x->direction = FORWARD;
     x->speed = 0;
+    x->wantedSpeed = 0;
+    x->actualSpeed = 0;
     
     return x;
 }
@@ -38,7 +40,7 @@ motor *InitMotor (uint8_t dir_pin, uint8_t  spd_pin) {
 void MooveForward (motor *x, float speed) {
     x->direction = FORWARD;
     if(speed >= 0) {
-        x->speed = speed;
+        x->wantedSpeed = speed;
     }
 }
 
@@ -51,7 +53,7 @@ void MooveForward (motor *x, float speed) {
 void MooveBackward (motor *x, float speed) {
     x->direction = BACKWARD;
     if(speed >= 0) {
-        x->speed = speed;
+        x->wantedSpeed = speed;
     }
 }
 
@@ -61,13 +63,18 @@ void MooveBackward (motor *x, float speed) {
  * @param x the motor containing all the informations
  */
 void Moove (motor x) {
-    if(x.direction == FORWARD) {
-        digitalWrite(x.dir_pin, HIGH);
+    if(x.state == ON) {
+        if(x.direction == FORWARD) {
+            digitalWrite(x.dir_pin, HIGH);
+        }
+        else if(x.direction == BACKWARD) {
+            digitalWrite(x.dir_pin, LOW);
+        }
+        analogWrite(x.spd_pin, (x.wantedSpeed/2)*255);
     }
-    else if(x.direction == BACKWARD) {
-        digitalWrite(x.dir_pin, LOW);
+    else {
+        analogWrite(x.spd_pin, 0);
     }
-    analogWrite(x.spd_pin, x.speed);
 }
 
 /**
@@ -77,9 +84,29 @@ void Moove (motor x) {
  * @param str name of the motor
  */
 void PrintMotorSpeed(motor x, const char* str) {
-    Serial.print("Speed Motor ");
-    Serial.print(str);
-    Serial.print(" : ");
-    Serial.print( x.speed );
-    Serial.println("km.h^(-1)");
+    #if DEBUG
+        Serial.print("Speed Motor ");
+        Serial.print(str);
+        Serial.print(" : ");
+        Serial.print( x.speed );
+        Serial.println("turn.s^(-1)");
+    #endif
+}
+
+/**
+ * @brief Function to turn on the motor
+ * 
+ * @param x motor to change state value
+ */
+void ActivateMotor (motor *x) {
+    x->state = ON;
+}
+
+/**
+ * @brief Function to turn off the motor
+ * 
+ * @param x motor to change state value
+ */
+void DeactivateMotor (motor *x) {
+    x->state = OFF;
 }
