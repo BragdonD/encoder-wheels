@@ -43,6 +43,7 @@ void ResetCaptor(captor *x) {
  * @param holesCounter Number of holes detected in the last period
  * @return float the distance traveled in cm
  */
+[[deprecated("Not working with the current project's direction")]]
 float calculDistance(int holesCounter) {
     return HOLE_ADVANCE_CM * (float)holesCounter;
 }
@@ -54,6 +55,7 @@ float calculDistance(int holesCounter) {
  * @param time Time of the last period
  * @return float the last period robot's speed
  */
+[[deprecated("Not working with the current project's direction")]]
 float calculSpeed(float distance, float time) {
     return distance / time;
 }

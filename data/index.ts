@@ -1,38 +1,51 @@
-const gateway : string = "ws://squad1063.local:100/ws";
-let websocket : WebSocket;
-
+const gateway : string = "ws://squad1063.local:100/ws"; ///websocket connection adress
+let websocket : WebSocket;  ///the websocket
+/**
+ * Variables to stores the last 20 motors speed value
+ */
 let valuesB = [0];
 let valuesA = [0];
-
+/**
+ * Variables to stores the state of the differents buttons
+ */
 let state : boolean = false;
 let state2 : boolean = false;
 let toggleBtn : boolean = false;
 let toggleBtn2 : boolean = false;
-
+/**
+ * @brief function to init webSocekt
+ */
 function InitWS() : void {
     console.log("Opening a webSocket");
     websocket = new WebSocket(gateway);
+    ///Setting up the function
     websocket.onopen = onOpen;
     websocket.onclose = onClose;
     websocket.onmessage = onMessage;
 }
 
+/**
+ * @brief Function to be called when the websocket connection is opened
+ * @param e Open Event 
+ */
 function onOpen(e : Event) : void {
     console.log("Connection has been opened");
 }
-
+/**
+ * @brief Function to be called when the websocket connection is closed
+ * @param e Close Event
+ */
 function onClose(e : CloseEvent) : void {
     console.log("Connection has been closed");
 }
-
+/**
+ * @brief Function to be called when the websocket received a message
+ * @param e Message Event
+ */
 function onMessage(e : MessageEvent) : void {
-    //console.log("Received message from WebSocket");
-    let data : Object = JSON.parse(e.data);
-
-    //console.log(data);
+    let data : Object = JSON.parse(e.data); ///parse the received message to extract the data
     
-    
-    if (data["motorA"] !== undefined) {
+    if (data["motorA"] !== undefined) { ///set data for motor A
         if (data["motorA"]["speed"] !== undefined) {
             let range : HTMLElement = document.getElementById("left-motor-speed");
             (<HTMLInputElement>range).value = data["motorA"]["speed"];
@@ -45,7 +58,7 @@ function onMessage(e : MessageEvent) : void {
             }
         }
     }
-    if (data["motorB"] !== undefined) {
+    if (data["motorB"] !== undefined) {///set data for motor B
         if (data["motorB"]["speed"] !== undefined) {
             let range : HTMLElement = document.getElementById("right-motor-speed");
             (<HTMLInputElement>range).value = data["motorB"]["speed"];
@@ -58,30 +71,36 @@ function onMessage(e : MessageEvent) : void {
             }
         }
     }
-    if(data["CurrentSpeedB"] !== undefined) {
+    if(data["CurrentSpeedB"] !== undefined) {///set data for values B
         if(valuesB.length > 20) {
             valuesB.shift();
         }
         valuesB.push(data["CurrentSpeedB"]);
     }
-    if(data["CurrentSpeedA"] !== undefined) {
+    if(data["CurrentSpeedA"] !== undefined) {///set data for values A
         if(valuesA.length > 20) {
             valuesA.shift();
         }
         valuesA.push(data["CurrentSpeedA"]);
-        //console.log(valuesA);  
     }
 }
-
+/**
+ * @brief Function to be called when the page is load
+ * @param e 
+ */
 function onLoad(e : Event) : void {
     InitWS();
 }
-
+/**
+ * @brief Function to send data to the websocket server
+ * @param e HTLL Event
+ */
 function sendMessage(e : Event) : void {
     e.preventDefault();
+    ///Get the event target
     let elem : HTMLElement = <HTMLElement>e.target;
     let toSend : Object;
-    
+    ///Create the data to send in function of the event target id
     switch (elem.id) {
         case "right-off":
             toSend = {
@@ -129,7 +148,7 @@ function sendMessage(e : Event) : void {
         default:
             break;
     }
-    //console.log("Sending message");
+    ///Send the data
     websocket.send(JSON.stringify(toSend));
 }
 

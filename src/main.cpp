@@ -12,11 +12,11 @@
 #include "ws.h"
 #include "global.h"
 
-///variable Declaration
+///variables Declaration
 motor *motorA, *motorB; ///Both motors
 captor *captorA, *captorB; ///Both Captors
-SimpleTimer SpeedPrinting_timer;
-SimpleTimer SendData_timer;
+SimpleTimer SpeedPrinting_timer; ///calcul timer
+SimpleTimer SendData_timer; ///ws timer
 ESP8266WiFi wifis(true, MDNS_NAME);
 WebServer server(100);
 
@@ -56,6 +56,7 @@ void setup() {
 
   ///Initialisation of the timer to print and calcul the motors's speed.
   SpeedPrinting_timer.setInterval(1000, printSpeedMotors);
+  ///Initialisation of the timer to send the speed of both motors to all clients
   SendData_timer.setInterval(100, sendCurrentsSpeed);
 }
 
@@ -84,7 +85,7 @@ void IRAM_ATTR ISR_IncreaseCaptorBCount() {
 }
 
 /**
- * @brief Function to use inside the Simple timer. It will calcul the speed for each motors from the captors data.
+ * @brief Function to use inside the Simple timer. It will calcul the speed for each motors from the captors's data.
  * Then it will print this speed for each motors. And finally it will reset both captors.
  * 
  */
@@ -102,15 +103,23 @@ void printSpeedMotors() {
   ResetCaptor(captorB);
 }
 
+/**
+ * @brief Send the current calculated speed of both motors to all clients accepted on the webSocket.
+ * 
+ */
 void sendCurrentsSpeed() {
-    const size_t CAPACITY = JSON_OBJECT_SIZE(2);
-    StaticJsonDocument<CAPACITY> doc;
+  ///default size for our object
+  const size_t CAPACITY = JSON_OBJECT_SIZE(2);
+  StaticJsonDocument<CAPACITY> doc;
 
-    // create an object
-    JsonObject object = doc.to<JsonObject>();
-    object["CurrentSpeedA"] = motorA->speed;
-    object["CurrentSpeedB"] = motorB->speed;
-    String Data;
-    serializeJson(object, Data);
-    notifyClients(Data, &(const_cast<AsyncWebSocket&>(server.getWS())));
+  // create our obejct
+  JsonObject object = doc.to<JsonObject>();
+  ///fill our object
+  object["CurrentSpeedA"] = motorA->speed;
+  object["CurrentSpeedB"] = motorB->speed;
+  ///serialize our object
+  String Data;
+  serializeJson(object, Data);
+  ///send our object to all clients
+  notifyClients(Data, &(const_cast<AsyncWebSocket&>(server.getWS())));
 }
