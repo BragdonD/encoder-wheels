@@ -1,10 +1,11 @@
 #if !defined(GLOBAL_H)
 #define GLOBAL_H
-
+#include "ws.h"
 #include <SimpleTimer.h>
 #include "connection.h"
 #include "robot.h"
 #include "motor.h"
+
 
 ///Variable Declaration
 extern motor *motorA, *motorB; ///Both motors

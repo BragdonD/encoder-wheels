@@ -1,10 +1,13 @@
 const gateway : string = "ws://squad1063.local:100/ws";
 let websocket : WebSocket;
 
+let valuesB = [0];
+let valuesA = [0];
+
 let state : boolean = false;
 let state2 : boolean = false;
-let toggleBtn : boolean = true;
-let toggleBtn2 : boolean = true;
+let toggleBtn : boolean = false;
+let toggleBtn2 : boolean = false;
 
 function InitWS() : void {
     console.log("Opening a webSocket");
@@ -23,34 +26,50 @@ function onClose(e : CloseEvent) : void {
 }
 
 function onMessage(e : MessageEvent) : void {
-    console.log("Received message from WebSocket");
+    //console.log("Received message from WebSocket");
     let data : Object = JSON.parse(e.data);
+
+    //console.log(data);
+    
     
     if (data["motorA"] !== undefined) {
         if (data["motorA"]["speed"] !== undefined) {
             let range : HTMLElement = document.getElementById("left-motor-speed");
             (<HTMLInputElement>range).value = data["motorA"]["speed"];
             let value : HTMLElement = document.getElementById("left-range-value");
-            value.innerHTML = data["motorA"]["speed"] + " km/h";
+            value.innerHTML = data["motorA"]["speed"] + " turn/s";
         }
-        else if(data["motorA"]["state"] !== undefined){
+        if(data["motorA"]["state"] !== undefined){
             if( (data["motorA"]["state"] === "on" && state === false) || (data["motorA"]["state"] === "off" && state === true)) {
                 toggle(e);
             }
         }
     }
-    else if (data["motorB"] !== undefined) {
+    if (data["motorB"] !== undefined) {
         if (data["motorB"]["speed"] !== undefined) {
             let range : HTMLElement = document.getElementById("right-motor-speed");
             (<HTMLInputElement>range).value = data["motorB"]["speed"];
             let value : HTMLElement = document.getElementById("right-range-value");
-            value.innerHTML = data["motorB"]["speed"] + " km/h";
+            value.innerHTML = data["motorB"]["speed"] + " turn/s";
         }
-        else if(data["motorB"]["state"] !== undefined){
+        if(data["motorB"]["state"] !== undefined){
             if( (data["motorB"]["state"] === "on" && state2 === false) || (data["motorB"]["state"] === "off" && state2 === true)) {
                 toggle2(e);
             }
         }
+    }
+    if(data["CurrentSpeedB"] !== undefined) {
+        if(valuesB.length > 20) {
+            valuesB.shift();
+        }
+        valuesB.push(data["CurrentSpeedB"]);
+    }
+    if(data["CurrentSpeedA"] !== undefined) {
+        if(valuesA.length > 20) {
+            valuesA.shift();
+        }
+        valuesA.push(data["CurrentSpeedA"]);
+        //console.log(valuesA);  
     }
 }
 
@@ -110,7 +129,7 @@ function sendMessage(e : Event) : void {
         default:
             break;
     }
-    console.log("Sending message");
+    //console.log("Sending message");
     websocket.send(JSON.stringify(toSend));
 }
 
@@ -153,7 +172,7 @@ const onChangeLeft = (e : Event) => {
 }
 
 const updateLeftRangeValue = (value : number) => {
-    document.getElementById("left-range-value").innerHTML = value + " km/h";
+    document.getElementById("left-range-value").innerHTML = value + " turn/s";
 };
 
 const onChangeRight = (e : Event) => {
@@ -162,7 +181,7 @@ const onChangeRight = (e : Event) => {
 }
 
 const updateRightRangeValue = (value : number) => {
-    document.getElementById("right-range-value").innerHTML = value + " km/h";
+    document.getElementById("right-range-value").innerHTML = value + " turn/s";
 };
 
 function toggle3(e : Event) : void {
@@ -180,6 +199,12 @@ function toggle3(e : Event) : void {
         leftDivButtonToggle.classList.remove("forwards");
         leftDivButtonToggle.innerHTML = "BACKWARDS";
     }
+
+    websocket.send(JSON.stringify({
+        motorA: {
+            direction: toggleBtn !== true ? "backwards" : "forwards"
+        }
+    }))
 }
 
 function toggle4(e : Event) : void {
@@ -197,4 +222,10 @@ function toggle4(e : Event) : void {
         rightDivButtonToggle.classList.remove("forwards");
         rightDivButtonToggle.innerHTML = "BACKWARDS";
     }
+
+    websocket.send(JSON.stringify({
+        motorB: {
+            direction: toggleBtn2 !== true ? "backwards" : "forwards"
+        }
+    }))
 }

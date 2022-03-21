@@ -1,6 +1,6 @@
 #if !defined(SETTINGS_H)
 #define SETTINGS_H
 
-#define DEBUG true
+#define DEBUG false
 
 #endif // SETTINGS_H

@@ -29,6 +29,7 @@ class WebServer
         bool checkSecurity(String &ssid, String &password);
 
         void initWS();
+        const AsyncWebSocket& getWS() const;
 
     private:
         uint8_t m_port;
@@ -41,5 +42,6 @@ class WebServer
 void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socket);
 void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
 void notifyClients(String &data, AsyncWebSocket *ws);
+void sendCurrentsSpeed();
 
 #endif // WEBSERVER_H

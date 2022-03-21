@@ -14,7 +14,7 @@
 #include <Arduino.h>
 
 ///Define pins
-#define CAPTOR_MOT1_PIN 14U ///D5
+#define CAPTOR_MOT1_PIN 13U ///D5
 #define CAPTOR_MOT2_PIN 12U ///D6
 
 ///Define material characteristics

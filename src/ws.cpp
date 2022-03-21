@@ -1,5 +1,5 @@
 #include "ws.h"
-
+#include "global.h"
 /**
  * @brief Construct a new Web Server:: Web Server object
  * 
@@ -306,6 +306,8 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
             else {
                 motorA->state = OFF;
             }
+            Serial.println(motorA->state);
+            Serial.println(motorA->wantedSpeed);
         }
         else if(json["motorB"]["speed"]) {
             #if DEBUG
@@ -322,6 +324,28 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
             }
             else {
                 motorB->state = OFF;
+            }
+        }
+        else if(json["motorB"]["direction"]) {
+            #if DEBUG
+                Serial.println("modif direction motor B");
+            #endif
+            if(json["motorB"]["direction"] == "forwards") {
+                motorB->direction = FORWARD;
+            }
+            else {
+                motorB->direction = BACKWARD;
+            }
+        }
+        else if(json["motorA"]["direction"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            if(json["motorA"]["direction"] == "forwards") {
+                motorA->direction = FORWARD;
+            }
+            else {
+                motorA->direction = BACKWARD;
             }
         }
 
@@ -383,4 +407,8 @@ void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type
 void WebServer::initWS() {
     m_ws.onEvent(onEvent);
     m_server.addHandler(&m_ws);
+}
+
+const AsyncWebSocket& WebServer::getWS() const {
+    return m_ws;
 }

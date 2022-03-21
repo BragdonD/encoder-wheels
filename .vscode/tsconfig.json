@@ -9,6 +9,5 @@
     "files": [
         "../data/index.ts",
         "../data/login.ts",
-        "../data/serial.ts"
     ],
 }
