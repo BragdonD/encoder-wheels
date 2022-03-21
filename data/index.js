@@ -1,29 +1,49 @@
-var gateway = "ws://squad1063.local:100/ws";
-var websocket;
+var gateway = "ws://squad1063.local:100/ws"; ///websocket connection adress
+var websocket; ///the websocket
+/**
+ * Variables to stores the last 20 motors speed value
+ */
 var valuesB = [0];
 var valuesA = [0];
+/**
+ * Variables to stores the state of the differents buttons
+ */
 var state = false;
 var state2 = false;
 var toggleBtn = false;
 var toggleBtn2 = false;
+/**
+ * @brief function to init webSocekt
+ */
 function InitWS() {
     console.log("Opening a webSocket");
     websocket = new WebSocket(gateway);
+    ///Setting up the function
     websocket.onopen = onOpen;
     websocket.onclose = onClose;
     websocket.onmessage = onMessage;
 }
+/**
+ * @brief Function to be called when the websocket connection is opened
+ * @param e Open Event
+ */
 function onOpen(e) {
     console.log("Connection has been opened");
 }
+/**
+ * @brief Function to be called when the websocket connection is closed
+ * @param e Close Event
+ */
 function onClose(e) {
     console.log("Connection has been closed");
 }
+/**
+ * @brief Function to be called when the websocket received a message
+ * @param e Message Event
+ */
 function onMessage(e) {
-    //console.log("Received message from WebSocket");
-    var data = JSON.parse(e.data);
-    //console.log(data);
-    if (data["motorA"] !== undefined) {
+    var data = JSON.parse(e.data); ///parse the received message to extract the data
+    if (data["motorA"] !== undefined) { ///set data for motor A
         if (data["motorA"]["speed"] !== undefined) {
             var range = document.getElementById("left-motor-speed");
             range.value = data["motorA"]["speed"];
@@ -36,7 +56,7 @@ function onMessage(e) {
             }
         }
     }
-    if (data["motorB"] !== undefined) {
+    if (data["motorB"] !== undefined) { ///set data for motor B
         if (data["motorB"]["speed"] !== undefined) {
             var range = document.getElementById("right-motor-speed");
             range.value = data["motorB"]["speed"];
@@ -49,27 +69,36 @@ function onMessage(e) {
             }
         }
     }
-    if (data["CurrentSpeedB"] !== undefined) {
+    if (data["CurrentSpeedB"] !== undefined) { ///set data for values B
         if (valuesB.length > 20) {
             valuesB.shift();
         }
         valuesB.push(data["CurrentSpeedB"]);
     }
-    if (data["CurrentSpeedA"] !== undefined) {
+    if (data["CurrentSpeedA"] !== undefined) { ///set data for values A
         if (valuesA.length > 20) {
             valuesA.shift();
         }
         valuesA.push(data["CurrentSpeedA"]);
-        //console.log(valuesA);  
     }
 }
+/**
+ * @brief Function to be called when the page is load
+ * @param e
+ */
 function onLoad(e) {
     InitWS();
 }
+/**
+ * @brief Function to send data to the websocket server
+ * @param e HTLL Event
+ */
 function sendMessage(e) {
     e.preventDefault();
+    ///Get the event target
     var elem = e.target;
     var toSend;
+    ///Create the data to send in function of the event target id
     switch (elem.id) {
         case "right-off":
             toSend = {
@@ -116,7 +145,7 @@ function sendMessage(e) {
         default:
             break;
     }
-    //console.log("Sending message");
+    ///Send the data
     websocket.send(JSON.stringify(toSend));
 }
 function toggle(e) {

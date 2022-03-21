@@ -1,3 +1,13 @@
+/**
+ * @file connection.h
+ * @author DUCLOS Thomas
+ * @brief header file for the ESP8266WiFi class
+ * @version 0.1
+ * @date 2022-03-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #if !defined(CONNECTION_H)
 #define CONNECTION_H
 

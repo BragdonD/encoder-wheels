@@ -1,3 +1,13 @@
+/**
+ * @file global.h
+ * @author DUCLOS Thomas
+ * @brief This file contain all the extern declaration for the global variables
+ * @version 0.1
+ * @date 2022-03-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #if !defined(GLOBAL_H)
 #define GLOBAL_H
 #include "ws.h"

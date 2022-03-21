@@ -1,3 +1,13 @@
+/**
+ * @file ws.cpp
+ * @author DUCLOS Thomas
+ * @brief source file for the WebServer class
+ * @version 0.1
+ * @date 2022-03-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "ws.h"
 #include "global.h"
 /**
@@ -230,7 +240,7 @@ void WebServer::run() {
  * @param var 
  * @return String 
  */
-[[deprecated("This function is in here developping stage do not use it")]]
+[[deprecated("actually not developped")]]
 String WebServer::processor(const String& var) {
     return "temp";
 }
@@ -274,18 +284,21 @@ bool WebServer::checkSecurity(String &ssid, String &password) {
 }
 
 /**
- * @brief 
+ * @brief Function to handle message receive by the Websocket
  * 
- * @param arg 
- * @param data 
- * @param len 
+ * @param arg the arguments data
+ * @param data the data 
+ * @param len the length of the data
  */
 void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socket) {
-    AwsFrameInfo *info = (AwsFrameInfo*)arg;
+    AwsFrameInfo *info = (AwsFrameInfo*)arg; ///get the argument data
 
     if( info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         data[len] = 0;
-
+        /**
+         * @brief get the data in form of a jsonObject. 
+         * It is the equivalent of JSON.parse()         * 
+         */
         DynamicJsonDocument doc(1024);
         deserializeJson(doc, (char*)data);
         JsonObject json = doc.as<JsonObject>();
@@ -348,7 +361,10 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
                 motorA->direction = BACKWARD;
             }
         }
-
+        /**
+         * @brief Notify all clients of the modification
+         * 
+         */
         String Data;
         serializeJson(json, Data);
         notifyClients(Data, socket);
@@ -356,24 +372,24 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
 }
 
 /**
- * @brief 
+ * @brief Function to send data to all accepted clients
  * 
- * @param data 
- * @param ws 
+ * @param data the data to send. Need to be a json object serialized
+ * @param ws the websocket
  */
 void notifyClients(String &data, AsyncWebSocket *ws) {
     ws->textAll(data);
 }
 
 /**
- * @brief 
+ * @brief Function to handle WebSocket Event
  * 
- * @param ws 
- * @param client 
- * @param type 
- * @param arg 
- * @param data 
- * @param len 
+ * @param ws Websocket
+ * @param client WebSocket clients
+ * @param type WebSocket event
+ * @param arg websocket data arguments
+ * @param data data receive
+ * @param len data length
  */
 void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
     switch (type)
@@ -388,7 +404,7 @@ void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type
             Serial.printf("WebSocket client #%u disconnected\n", client->id());
         #endif
         break;
-    case WS_EVT_DATA:
+    case WS_EVT_DATA: ///Receive a message
         handleWSMessage(arg, data, len, ws);
         break;
     case WS_EVT_PONG:
@@ -401,7 +417,7 @@ void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type
 }
 
 /**
- * @brief 
+ * @brief Method to init the websocket. Needs to be called inside the setup of the webserver method
  * 
  */
 void WebServer::initWS() {
@@ -409,6 +425,11 @@ void WebServer::initWS() {
     m_server.addHandler(&m_ws);
 }
 
+/**
+ * @brief Getter of the websocket
+ * 
+ * @return const AsyncWebSocket& the websocket
+ */
 const AsyncWebSocket& WebServer::getWS() const {
     return m_ws;
 }
