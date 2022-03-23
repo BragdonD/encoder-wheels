@@ -90,7 +90,7 @@ void IRAM_ATTR ISR_IncreaseCaptorBCount() {
  * 
  */
 void printSpeedMotors() {
-  ///Calcul of both speed from captor data
+  ///Calcul both speeds from captor data
   motorA->speed = ( (float)captorA->count/(float)CAPTOR_HOLES_NB);
   motorB->speed = ( (float)captorB->count/(float)CAPTOR_HOLES_NB);
   ///print speed for both motors
