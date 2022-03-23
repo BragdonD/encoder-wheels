@@ -309,7 +309,7 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
             #endif
             motorA->wantedSpeed = json["motorA"]["speed"];
         }
-        else if(json["motorA"]["state"]) {
+        if(json["motorA"]["state"]) {
             #if DEBUG
                 Serial.println("modif state motor A");
             #endif
@@ -322,13 +322,13 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
             Serial.println(motorA->state);
             Serial.println(motorA->wantedSpeed);
         }
-        else if(json["motorB"]["speed"]) {
+        if(json["motorB"]["speed"]) {
             #if DEBUG
                 Serial.println("modif speed motor B");
             #endif
             motorB->wantedSpeed = json["motorB"]["speed"];
         }
-        else if(json["motorB"]["state"]) {
+        if(json["motorB"]["state"]) {
             #if DEBUG
                 Serial.println("modif state motor B");
             #endif
@@ -339,7 +339,7 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
                 motorB->state = OFF;
             }
         }
-        else if(json["motorB"]["direction"]) {
+        if(json["motorB"]["direction"]) {
             #if DEBUG
                 Serial.println("modif direction motor B");
             #endif
@@ -350,7 +350,7 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
                 motorB->direction = BACKWARD;
             }
         }
-        else if(json["motorA"]["direction"]) {
+        if(json["motorA"]["direction"]) {
             #if DEBUG
                 Serial.println("modif direction motor A");
             #endif
