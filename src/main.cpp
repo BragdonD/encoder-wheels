@@ -13,6 +13,10 @@
 #include "global.h"
 #include "PID.h"
 
+#define KP_MOTOR_PID 0.1
+#define KI_MOTOR_PID 1
+#define KD_MOTOR_PID 0.1
+
 ///variables Declaration
 motor *motorA, *motorB; ///Both motors
 captor *captorA, *captorB; ///Both Captors
@@ -20,6 +24,8 @@ SimpleTimer SpeedPrinting_timer; ///calcul timer
 SimpleTimer SendData_timer; ///ws timer
 ESP8266WiFi wifis(true, MDNS_NAME);
 WebServer server(100);
+PID pid_motorA(KP_MOTOR_PID,KI_MOTOR_PID,KD_MOTOR_PID);
+PID pid_motorB(KP_MOTOR_PID,KI_MOTOR_PID,KD_MOTOR_PID);
 
 ///Declaration of the function
 void IRAM_ATTR ISR_IncreaseCaptorBCount();
@@ -62,12 +68,13 @@ void setup() {
 }
 
 void loop() {
+  Moove(*motorA);
+  Moove(*motorB);
   SpeedPrinting_timer.run(); ///Need to be called to make the timer works
   SendData_timer.run();
   wifis.run();
   server.run();
-  Moove(*motorA);
-  Moove(*motorB);
+  calculSpeed(10.0f,1.0f);
 }
 /**
  * @brief ISR function to be call inside Interrupt function to increase the hole count of the A captor
@@ -99,6 +106,10 @@ void printSpeedMotors() {
     PrintMotorSpeed(*motorA, "A");
     PrintMotorSpeed(*motorB, "B");
   #endif
+  ///calcul both corrected speed with pid
+  motorA->actualSpeed = pid_motorA.subjugationFunction(motorA->state, motorA->speed, motorA->wantedSpeed);
+  motorB->actualSpeed = pid_motorB.subjugationFunction(motorB->state, motorB->speed, motorB->wantedSpeed);
+
   ///Reset Captors data
   ResetCaptor(captorA);
   ResetCaptor(captorB);

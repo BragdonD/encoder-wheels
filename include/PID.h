@@ -1,24 +1,19 @@
 #if !defined(PID_H)
 #define PID_H
 
-#include <SimpleTimer.h>
-#include "global.h"
-#include "robot.h"
-
-
-
+#include "motor.h"
 class PID
 {
 private:
-    float m_Error;
-    float m_Consigne;
-    float m_Cumulated_Error;
-    float m_Kp;
-    float m_Ki;
-    float m_Kd;
-    float m_LastError;
+    float m_Error = 0;
+    float m_Consigne = 0;
+    float m_Cumulated_Error = 0;
+    float m_Kp = 0;
+    float m_Ki = 0;
+    float m_Kd = 0;
+    float m_LastError = 0;
 public:
-    PID(/* args */);
+    PID(float,float,float);
     ~PID();
     float subjugationFunction (uint8_t,float,float);
     void setCumulatedError (float);
@@ -33,9 +28,5 @@ public:
     float getKi ();
     float getKd ();
 };
-
-extern PID Subjugation;
-
-
 
 #endif // PID_H

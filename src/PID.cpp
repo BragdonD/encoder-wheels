@@ -9,12 +9,14 @@
  * 
  */
 #include "PID.h"
-
 /**
- * @brief constructor of PID
+ * @brief Construct a new PID::PID object
  * 
+ * @param _kp 
+ * @param _ki 
+ * @param _kd 
  */
-PID::PID(/* args */)
+PID::PID(float _kp, float _ki, float _kd) : m_Kp(_kp), m_Ki(_ki), m_Kd(_kd)
 {
 }
 
@@ -146,16 +148,31 @@ float PID::getKd ()
  */
 float PID::subjugationFunction(uint8_t state,float speed,float wanted_speed)
 {
-  if(state == ON )
-  {
-      //Error calcul
-      setConsigne(wanted_speed);
-      setError( getConsigne() - speed);
-      setCumulatedError ( getCumulatedError() +  getError());
-      setLastError( getError());
+  if(state == ON)
+  { 
+    //Error calcul
+    setConsigne(wanted_speed);
+    setLastError( getError());
+    setError( getConsigne() - speed);
+    setCumulatedError ( getCumulatedError() +  getError());
+    if(getCumulatedError() > 2.0) setCumulatedError(2.0);
+    if(getCumulatedError() < -2.0) setCumulatedError(-2.0);
 
-      //PID corrector
-      return  getKp() *  getError() +  getKi() *  getCumulatedError() +  getKd() * ( getError() -  getLastError() );  
+    #if DEBUG
+      Serial.printf("Wanted Speed : %f\n", wanted_speed);
+      Serial.printf("Speed : %f\n", speed);
+      Serial.printf("Error: %f\n", getError());
+      Serial.printf("Cumlated Error: %f\n", getCumulatedError());
+      Serial.printf("Last Error : %f\n", getLastError());
+      Serial.printf("New Speed : %f\n", ((getKp() * getError()) +  (getKi() *  getCumulatedError()) +  (getKd() * ( getError() -  getLastError() ))));
+      Serial.printf("%f\n", getKp() * getError());
+      Serial.printf("%f\n", getKi() *  getCumulatedError());
+      Serial.printf("%f\n", getKd() * ( getError() -  getLastError()));
+      Serial.printf("actual speed A : %f\n\n", ((getKp() * getError()) +  (getKi() *  getCumulatedError()) +  (getKd() * ( getError() -  getLastError() ))));
+    #endif
+
+    //PID corrector
+    return  ((getKp() * getError()) +  (getKi() *  getCumulatedError()) +  (getKd() * ( getError() -  getLastError() )));
   }
   setError(0);
   setCumulatedError(0);

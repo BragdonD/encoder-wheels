@@ -103,7 +103,9 @@
                     ticks: {
                         fontColor: "#fff",
                         fontSize: 10,
-                    }
+                    },
+                    min: 0,
+                    max: 2.1,
                 }],
                 xAxes: [{
                     ticks: {
@@ -123,10 +125,10 @@
             xValuesLeft.push(counter);
             
             yValuesLeft.push(document.getElementById("left-motor-speed").value)
-            if(yValuesLeft.length > 20) {
+            if(yValuesLeft.length > 100) {
                 yValuesLeft.shift();
             }
-            if(xValuesLeft.length > 20) {
+            if(xValuesLeft.length > 100) {
                 xValuesLeft.shift();
             }
             chartLeft.update();
@@ -169,7 +171,9 @@
                     ticks: {
                         fontColor: "#fff",
                         fontSize: 10,
-                    }
+                    },
+                    min: 0,
+                    max: 2.1,
                 }],
                 xAxes: [{
                     ticks: {
@@ -189,10 +193,10 @@
             xValuesRight.push(counter);
 
             yValuesRight.push(document.getElementById("right-motor-speed").value);
-            if(yValuesRight.length > 20) {
+            if(yValuesRight.length > 100) {
                 yValuesRight.shift();
             }
-            if(xValuesRight.length > 20) {
+            if(xValuesRight.length > 100) {
                 xValuesRight.shift();
             }
             chartRight.update();

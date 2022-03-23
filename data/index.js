@@ -70,13 +70,13 @@ function onMessage(e) {
         }
     }
     if (data["CurrentSpeedB"] !== undefined) { ///set data for values B
-        if (valuesB.length > 20) {
+        if (valuesB.length > 100) {
             valuesB.shift();
         }
         valuesB.push(data["CurrentSpeedB"]);
     }
     if (data["CurrentSpeedA"] !== undefined) { ///set data for values A
-        if (valuesA.length > 20) {
+        if (valuesA.length > 100) {
             valuesA.shift();
         }
         valuesA.push(data["CurrentSpeedA"]);
