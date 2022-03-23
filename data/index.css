@@ -71,6 +71,11 @@ body {
   }
 }
 
+.grid.solo {
+  -ms-grid-columns: 1fr !important;
+      grid-template-columns: 1fr !important;
+}
+
 .container {
   padding: 30px;
   margin: 15px auto;
@@ -109,6 +114,7 @@ body {
 }
 
 .container .serial-wrapper {
+  overflow: hidden;
   margin: 30px 0;
 }
 
@@ -197,24 +203,24 @@ body {
   border-radius: 0 5px 5px 0;
 }
 
-.container .input-wrapper div button#toggle-left-direction, .container .input-wrapper div button#toggle-right-direction {
+.container .input-wrapper div button#toggle-left-direction, .container .input-wrapper div button#toggle-right-direction, .container .input-wrapper div button#toggle-both-direction {
   border-radius: 5px;
 }
 
-.container .input-wrapper div button#toggle-left-direction.forwards, .container .input-wrapper div button#toggle-right-direction.forwards {
+.container .input-wrapper div button#toggle-left-direction.forwards, .container .input-wrapper div button#toggle-right-direction.forwards, .container .input-wrapper div button#toggle-both-direction.forwards {
   background-color: #4285F8;
 }
 
-.container .input-wrapper div button#toggle-left-direction.forwards:hover, .container .input-wrapper div button#toggle-right-direction.forwards:hover {
+.container .input-wrapper div button#toggle-left-direction.forwards:hover, .container .input-wrapper div button#toggle-right-direction.forwards:hover, .container .input-wrapper div button#toggle-both-direction.forwards:hover {
   cursor: pointer;
   background-color: rgba(66, 133, 248, 0.4);
 }
 
-.container .input-wrapper div button#toggle-left-direction.backwards, .container .input-wrapper div button#toggle-right-direction.backwards {
+.container .input-wrapper div button#toggle-left-direction.backwards, .container .input-wrapper div button#toggle-right-direction.backwards, .container .input-wrapper div button#toggle-both-direction.backwards {
   background-color: #BD7D07;
 }
 
-.container .input-wrapper div button#toggle-left-direction.backwards:hover, .container .input-wrapper div button#toggle-right-direction.backwards:hover {
+.container .input-wrapper div button#toggle-left-direction.backwards:hover, .container .input-wrapper div button#toggle-right-direction.backwards:hover, .container .input-wrapper div button#toggle-both-direction.backwards:hover {
   cursor: pointer;
   background-color: rgba(189, 125, 7, 0.4);
 }
@@ -272,5 +278,23 @@ input[type="range"]::-moz-range-progress {
   height: 100%;
   border-radius: 15px;
   background-color: #ffffff81;
+}
+
+.hidden {
+  display: none;
+}
+
+#swap-control {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px #fff solid;
+  border-radius: 15px;
+  padding: 10px 20px;
+  color: white;
+  margin: 10px 0;
+}
+
+#swap-control:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 /*# sourceMappingURL=index.css.map */

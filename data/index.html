@@ -15,14 +15,43 @@
     </script>
     <div class="wrapper">
         <h1 class="main-title">Squad 1063's Control Panel</h1>
-        <div class="grid">
+        <button id="swap-control" class="separated" onclick="changeControlVision(event)">Union Control</button>
+        <script type="text/javascript">
+            const changeControlVision = (event) => {
+                let button = document.getElementById("swap-control");
+                let left = document.getElementById("left");
+                let right = document.getElementById("right");
+                let both = document.getElementById("both");
+                let grid = document.getElementById("grid");
+
+                if(button.classList.contains("separated")) {
+                    button.classList.remove("separated");
+                    button.classList.add("union");
+                    button.innerText = "Separated Control";
+                    left.classList.add("hidden");
+                    right.classList.add("hidden");
+                    both.classList.remove("hidden");
+                    grid.classList.add("solo");
+                }
+                else {
+                    button.classList.add("separated");
+                    button.classList.remove("union");
+                    button.innerText = "Union Control";
+                    left.classList.remove("hidden");
+                    right.classList.remove("hidden");
+                    both.classList.add("hidden");
+                    grid.classList.remove("solo");
+                }
+            }
+        </script>
+        <div class="grid" id="grid">
             <div id="left" class="container">
                 <h1>Motor Left</h1>
                 <div id="left-serial-container" class="serial-wrapper">
                     <canvas id="left-serial"></canvas>
                 </div>
                 <div class="input-wrapper">
-                    <input type="range" id="left-motor-speed" name="left-motor-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeLeft(event)" onmousemove="updateLeftRangeValue(this.value)">
+                    <input type="range" id="left-motor-speed" name="left-motor-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeLeft(event)" onmousemove="updateLeftRangeValue(this.value)" disabled>
                     <h2 id="left-range-value">0 turn/s</h2>
                     <div id="left-input-container" class="off before">
                         <button id="left-on" class="on">ON</button>
@@ -45,7 +74,7 @@
                     <canvas id="right-serial"></canvas>
                 </div>
                 <div class="input-wrapper">
-                    <input type="range" id="right-motor-speed"  name="right-motor-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeRight(event)"  onmousemove="updateRightRangeValue(this.value)">
+                    <input type="range" id="right-motor-speed"  name="right-motor-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeRight(event)"  onmousemove="updateRightRangeValue(this.value)" disabled>
                     <h2 id="right-range-value">0 turn/s</h2>
                     <div id="right-input-container" class="off before">
                         <button id="right-on" class="on">ON</button>
@@ -62,6 +91,29 @@
                     </div>
                 </div>
             </div>
+            <div id="both" class="container hidden">
+                <h1>Both motors</h1>
+                <div id="both-serial-container" class="serial-wrapper">
+                    <canvas id="both-serial"></canvas>
+                </div>
+                <div class="input-wrapper">
+                    <input type="range" id="motors-speed"  name="motors-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeBoth(event)"  onmousemove="updateBothRangeValue(this.value)" disabled>
+                    <h2 id="both-range-value">0 turn/s</h2>
+                    <div id="both-input-container" class="off before">
+                        <button id="both-on" class="on">ON</button>
+                        <button id="both-off" class="off">OFF</button>
+                    </div>
+                    <script type="text/javascript">
+                        document.getElementById("both-off").addEventListener("click", toggle5);
+                        document.getElementById("both-off").addEventListener("click", sendMessage);
+                        document.getElementById("both-on").addEventListener("click", toggle5);
+                        document.getElementById("both-on").addEventListener("click", sendMessage);
+                    </script>
+                    <div>
+                        <button id="toggle-both-direction" class="forwards" onclick="toggle6(event)">FORWARDS</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -69,7 +121,6 @@
     </script>
     <script type="text/javascript">
         let counter = 0;
-        let counter2 = 0;
         
         let xValuesLeft = [0];
         let yValuesLeft = [0];
@@ -139,6 +190,7 @@
     <script type="text/javascript">      
         let xValuesRight = [0];
         let yValuesRight = [0];
+        let counter2 = 0;
 
         ///create the serial series for the right motors
         let configRight= {
@@ -189,8 +241,8 @@
         const chartRight = new Chart("right-serial", configRight);
 
         function UpdateRightSerial(e) {
-            counter += 100;
-            xValuesRight.push(counter);
+            counter2 += 100;
+            xValuesRight.push(counter2);
 
             yValuesRight.push(document.getElementById("right-motor-speed").value);
             if(yValuesRight.length > 100) {
@@ -203,6 +255,80 @@
         }
         setInterval(() => {chartRight.update()}, 10);
         setInterval(UpdateRightSerial, 100);
+    </script>
+    <script type="text/javascript">
+        let yValuesBoth = [0];
+        let xValuesBoth = [0];
+        let counter3 = 0;
+        let configBoth = {
+            type: "line",
+            data: {
+                labels: xValuesBoth,
+                datasets: [
+                    {
+                        fill: false,
+                        lineTension: 0,
+                        pointRadius: 1,
+                        backgroundColor: "#fff",
+                        borderColor: "#fff",
+                        data: yValuesBoth,
+                    },
+                    {
+                        fill: false,
+                        lineTension: 0,
+                        pointRadius: 1,
+                        backgroundColor: "#FFFF00",
+                        borderColor: "#FFFF00",
+                        data: valuesA,
+                    },
+                    {
+                        fill: false,
+                        lineTension: 0,
+                        pointRadius: 1,
+                        backgroundColor: "#FF0000",
+                        borderColor: "#FF0000",
+                        data: valuesB,
+                    },]
+            },
+            options: {
+                legend: {display: false},
+                scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                        fontSize: 10,
+                    },
+                    min: 0,
+                    max: 2.1,
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                        fontSize: 10,
+                    }
+                }]
+            }
+            },
+            color: "#fff",
+        };
+
+        const chartBoth = new Chart("both-serial", configBoth);
+
+        function UpdateBothSerial(e) {
+            counter3 += 100;
+            xValuesBoth.push(counter3);
+            
+            yValuesBoth.push(document.getElementById("motors-speed").value)
+            if(yValuesBoth.length > 100) {
+                yValuesBoth.shift();
+            }
+            if(xValuesBoth.length > 100) {
+                xValuesBoth.shift();
+            }
+            chartBoth.update();
+        }
+        setInterval(() => {chartBoth.update();}, 10);
+        setInterval(UpdateBothSerial, 100);
     </script>
 </body>
 </html>

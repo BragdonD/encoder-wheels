@@ -10,8 +10,10 @@ let valuesA = [0];
  */
 let state : boolean = false;
 let state2 : boolean = false;
-let toggleBtn : boolean = false;
-let toggleBtn2 : boolean = false;
+let state3 : boolean = false;
+let toggleBtn : boolean = true;
+let toggleBtn2 : boolean = true;
+let toggleBtn3 : boolean = true;
 /**
  * @brief function to init webSocekt
  */
@@ -130,6 +132,26 @@ function sendMessage(e : Event) : void {
                 },
             }
             break;
+        case "both-off":
+            toSend = {
+                motorB: {
+                    state: "off",
+                },
+                motorA: {
+                    state: "off",
+                },
+            }
+            break;
+        case "both-on":
+            toSend = {
+                motorB: {
+                    state: "on",
+                },
+                motorA: {
+                    state: "on",
+                },
+            }
+            break;
         case "right-motor-speed":
             toSend = {
                 motorB: {
@@ -142,6 +164,16 @@ function sendMessage(e : Event) : void {
                 motorA: {
                     speed: (<HTMLInputElement>elem).value,
                 },
+            }
+            break;
+        case "motors-speed": 
+            toSend = {
+                motorA: {
+                    speed: (<HTMLInputElement>elem).value,
+                },
+                motorB: {
+                    speed: (<HTMLInputElement>elem).value,
+                }
             }
             break;
     
@@ -158,12 +190,14 @@ function toggle(e : Event) : void {
     state = !state;
 
     if ( state ) {
+        (<HTMLInputElement>(document.getElementById("left-motor-speed"))).disabled = false;
         leftDivButtonContainer.classList.remove("off");
         leftDivButtonContainer.classList.add("on");
     }
     else {
         (<HTMLInputElement>(document.getElementById("left-motor-speed"))).value = "0";
         updateLeftRangeValue(0);
+        (<HTMLInputElement>(document.getElementById("left-motor-speed"))).disabled = true;
         leftDivButtonContainer.classList.add("off");
         leftDivButtonContainer.classList.remove("on");
     }
@@ -174,17 +208,36 @@ function toggle2(e : Event) : void {
 
     state2 = !state2;
     if ( state2 ) {
+        (<HTMLInputElement>(document.getElementById("right-motor-speed"))).disabled = false;
         rightDivButtonContainer.classList.remove("off");
         rightDivButtonContainer.classList.add("on");
     }
     else {
         (<HTMLInputElement>(document.getElementById("right-motor-speed"))).value = "0";
         updateRightRangeValue(0);
+        (<HTMLInputElement>(document.getElementById("right-motor-speed"))).disabled = true;
         rightDivButtonContainer.classList.add("off");
         rightDivButtonContainer.classList.remove("on");
     }
 }
-                        
+           
+function toggle5(e : Event) : void {
+    let DivButtonToggle = document.getElementById("both-input-container");
+    state3 = !state3;
+    if ( state3 ) {
+        (<HTMLInputElement>(document.getElementById("motors-speed"))).disabled = false;
+        DivButtonToggle.classList.remove("off");
+        DivButtonToggle.classList.add("on");
+    }
+    else {
+        (<HTMLInputElement>(document.getElementById("motors-speed"))).disabled = true;
+        (<HTMLInputElement>(document.getElementById("motors-speed"))).value = "0";
+        updateBothRangeValue(0);
+        DivButtonToggle.classList.add("off");
+        DivButtonToggle.classList.remove("on");
+    }
+}
+
 const onChangeLeft = (e : Event) => {
     sendMessage(e);
     updateLeftRangeValue(parseInt((<HTMLInputElement>e.target).value));
@@ -244,6 +297,41 @@ function toggle4(e : Event) : void {
 
     websocket.send(JSON.stringify({
         motorB: {
+            direction: toggleBtn2 !== true ? "backwards" : "forwards"
+        }
+    }))
+}
+
+const onChangeBoth = (e : Event) => {
+    sendMessage(e);
+    updateRightRangeValue(parseInt((<HTMLInputElement>e.target).value));
+}
+
+const updateBothRangeValue = (value : number) => {
+    document.getElementById("both-range-value").innerHTML = value + " turn/s";
+};
+
+function toggle6(e : Event) : void {
+    let DivButtonToggle = document.getElementById("toggle-both-direction");
+
+    toggleBtn3 = !toggleBtn3;
+
+    if ( toggleBtn3 ) {
+        DivButtonToggle.classList.remove("backwards");
+        DivButtonToggle.classList.add("forwards");
+        DivButtonToggle.innerHTML = "FORWARDS";
+    }
+    else {
+        DivButtonToggle.classList.add("backwards");
+        DivButtonToggle.classList.remove("forwards");
+        DivButtonToggle.innerHTML = "BACKWARDS";
+    }
+
+    websocket.send(JSON.stringify({
+        motorB: {
+            direction: toggleBtn2 !== true ? "backwards" : "forwards"
+        },
+        motorA: {
             direction: toggleBtn2 !== true ? "backwards" : "forwards"
         }
     }))

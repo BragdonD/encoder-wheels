@@ -10,8 +10,10 @@ var valuesA = [0];
  */
 var state = false;
 var state2 = false;
-var toggleBtn = false;
-var toggleBtn2 = false;
+var state3 = false;
+var toggleBtn = true;
+var toggleBtn2 = true;
+var toggleBtn3 = true;
 /**
  * @brief function to init webSocekt
  */
@@ -152,12 +154,14 @@ function toggle(e) {
     var leftDivButtonContainer = document.getElementById("left-input-container");
     state = !state;
     if (state) {
+        (document.getElementById("left-motor-speed")).disabled = false;
         leftDivButtonContainer.classList.remove("off");
         leftDivButtonContainer.classList.add("on");
     }
     else {
         (document.getElementById("left-motor-speed")).value = "0";
         updateLeftRangeValue(0);
+        (document.getElementById("left-motor-speed")).disabled = true;
         leftDivButtonContainer.classList.add("off");
         leftDivButtonContainer.classList.remove("on");
     }
@@ -166,14 +170,32 @@ function toggle2(e) {
     var rightDivButtonContainer = document.getElementById("right-input-container");
     state2 = !state2;
     if (state2) {
+        (document.getElementById("right-motor-speed")).disabled = false;
         rightDivButtonContainer.classList.remove("off");
         rightDivButtonContainer.classList.add("on");
     }
     else {
         (document.getElementById("right-motor-speed")).value = "0";
         updateRightRangeValue(0);
+        (document.getElementById("right-motor-speed")).disabled = true;
         rightDivButtonContainer.classList.add("off");
         rightDivButtonContainer.classList.remove("on");
+    }
+}
+function toggle5(e) {
+    var DivButtonToggle = document.getElementById("both-input-container");
+    state3 = !state3;
+    if (state3) {
+        (document.getElementById("motors-speed")).disabled = false;
+        DivButtonToggle.classList.remove("off");
+        DivButtonToggle.classList.add("on");
+    }
+    else {
+        (document.getElementById("motors-speed")).disabled = true;
+        (document.getElementById("motors-speed")).value = "0";
+        updateBothRangeValue(0);
+        DivButtonToggle.classList.add("off");
+        DivButtonToggle.classList.remove("on");
     }
 }
 var onChangeLeft = function (e) {
@@ -224,6 +246,35 @@ function toggle4(e) {
     }
     websocket.send(JSON.stringify({
         motorB: {
+            direction: toggleBtn2 !== true ? "backwards" : "forwards"
+        }
+    }));
+}
+var onChangeBoth = function (e) {
+    sendMessage(e);
+    updateRightRangeValue(parseInt(e.target.value));
+};
+var updateBothRangeValue = function (value) {
+    document.getElementById("both-range-value").innerHTML = value + " turn/s";
+};
+function toggle6(e) {
+    var DivButtonToggle = document.getElementById("toggle-both-direction");
+    toggleBtn3 = !toggleBtn3;
+    if (toggleBtn3) {
+        DivButtonToggle.classList.remove("backwards");
+        DivButtonToggle.classList.add("forwards");
+        DivButtonToggle.innerHTML = "FORWARDS";
+    }
+    else {
+        DivButtonToggle.classList.add("backwards");
+        DivButtonToggle.classList.remove("forwards");
+        DivButtonToggle.innerHTML = "BACKWARDS";
+    }
+    websocket.send(JSON.stringify({
+        motorB: {
+            direction: toggleBtn2 !== true ? "backwards" : "forwards"
+        },
+        motorA: {
             direction: toggleBtn2 !== true ? "backwards" : "forwards"
         }
     }));
