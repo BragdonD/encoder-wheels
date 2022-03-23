@@ -14,7 +14,6 @@
 #include <Arduino.h>
 #include <string>
 #include "settings.h"
-#include "PID.h"
 
 ///define direction
 #define FORWARD 0x1

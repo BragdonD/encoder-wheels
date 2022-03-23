@@ -6,6 +6,7 @@
 #include "robot.h"
 
 
+
 class PID
 {
 private:
@@ -19,7 +20,7 @@ private:
 public:
     PID(/* args */);
     ~PID();
-    void subjugationFunction ();
+    float subjugationFunction (uint8_t,float,float);
     void setCumulatedError (float);
     void setConsigne(float);
     void setError (float);
@@ -32,6 +33,8 @@ public:
     float getKi ();
     float getKd ();
 };
+
+extern PID Subjugation;
 
 
 
