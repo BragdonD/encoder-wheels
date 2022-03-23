@@ -37,6 +37,7 @@ typedef struct motor
     uint8_t state; //state of the motor (ON, OFF)
     volatile float wantedSpeed;  //rotation speed wanted
     volatile float speed;        //rotation speed
+    volatile float actualSpeed;        //rotation speed
 }t_motor, motor;
 
 motor *InitMotor (uint8_t dir_pin, uint8_t  spd_pin);
