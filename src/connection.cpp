@@ -1,3 +1,13 @@
+/**
+ * @file connection.cpp
+ * @author DUCLOS Thomas
+ * @brief this file contain all the methods relative to the ESP8266WiFi class.
+ * @version 0.1
+ * @date 2022-03-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <stdexcept>
 #include "connection.h"
 

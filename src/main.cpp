@@ -13,7 +13,12 @@
 #include "global.h"
 #include "PID.h"
 
-///variable Declaration
+///variables Declaration
+motor *motorA, *motorB; ///Both motors
+captor *captorA, *captorB; ///Both Captors
+SimpleTimer SpeedPrinting_timer; ///calcul timer
+SimpleTimer SendData_timer; ///ws timer
+ESP8266WiFi wifis(true, MDNS_NAME);
 WebServer server(100);
 
 ///Declaration of the function
@@ -24,7 +29,6 @@ void printSpeedMotors();
 void setup() {
   ///Start the communication series with a 115200 baudrates which is the basic baudrate for ESP8266 cards
   Serial.begin( 115200UL ); 
-
 
   ///Setup the multiple wifi written in secret.h
   wifis.setup();
@@ -53,14 +57,18 @@ void setup() {
 
   ///Initialisation of the timer to print and calcul the motors's speed.
   SpeedPrinting_timer.setInterval(1000, printSpeedMotors);
+  ///Initialisation of the timer to send the speed of both motors to all clients
+  SendData_timer.setInterval(100, sendCurrentsSpeed);
 }
 
 void loop() {
-  ///SpeedPrinting_timer.run(); ///Need to be called to make the timer works
+  SpeedPrinting_timer.run(); ///Need to be called to make the timer works
+  SendData_timer.run();
   wifis.run();
   server.run();
+  Moove(*motorA);
+  Moove(*motorB);
 }
-
 /**
  * @brief ISR function to be call inside Interrupt function to increase the hole count of the A captor
  * 
@@ -78,18 +86,41 @@ void IRAM_ATTR ISR_IncreaseCaptorBCount() {
 }
 
 /**
- * @brief Function to use inside the Simple timer. It will calcul the speed for each motors from the captors data.
+ * @brief Function to use inside the Simple timer. It will calcul the speed for each motors from the captors's data.
  * Then it will print this speed for each motors. And finally it will reset both captors.
  * 
  */
 void printSpeedMotors() {
-  ///Calcul of both speed from captor data
-  motorA->speed = ( calculSpeed( calculDistance( captorA->count ), millis() - captorA->time ) * 36 );
-  motorB->speed = ( calculSpeed( calculDistance( captorB->count ), millis() - captorB->time) * 36 );
+  ///Calcul both speeds from captor data
+  motorA->speed = ( (float)captorA->count/(float)CAPTOR_HOLES_NB);
+  motorB->speed = ( (float)captorB->count/(float)CAPTOR_HOLES_NB);
   ///print speed for both motors
-  PrintMotorSpeed(*motorA, "A");
-  PrintMotorSpeed(*motorB, "B");
+  #if DEBUG
+    PrintMotorSpeed(*motorA, "A");
+    PrintMotorSpeed(*motorB, "B");
+  #endif
   ///Reset Captors data
   ResetCaptor(captorA);
   ResetCaptor(captorB);
+}
+
+/**
+ * @brief Send the current calculated speed of both motors to all clients accepted on the webSocket.
+ * 
+ */
+void sendCurrentsSpeed() {
+  ///default size for our object
+  const size_t CAPACITY = JSON_OBJECT_SIZE(2);
+  StaticJsonDocument<CAPACITY> doc;
+
+  // create our obejct
+  JsonObject object = doc.to<JsonObject>();
+  ///fill our object
+  object["CurrentSpeedA"] = motorA->speed;
+  object["CurrentSpeedB"] = motorB->speed;
+  ///serialize our object
+  String Data;
+  serializeJson(object, Data);
+  ///send our object to all clients
+  notifyClients(Data, &(const_cast<AsyncWebSocket&>(server.getWS())));
 }

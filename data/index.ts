@@ -1,68 +1,106 @@
-const gateway : string = "ws://squad1063.local:100/ws";
-let websocket : WebSocket;
-
+const gateway : string = "ws://squad1063.local:100/ws"; ///websocket connection adress
+let websocket : WebSocket;  ///the websocket
+/**
+ * Variables to stores the last 20 motors speed value
+ */
+let valuesB = [0];
+let valuesA = [0];
+/**
+ * Variables to stores the state of the differents buttons
+ */
 let state : boolean = false;
 let state2 : boolean = false;
-let toggleBtn : boolean = true;
-let toggleBtn2 : boolean = true;
-
+let toggleBtn : boolean = false;
+let toggleBtn2 : boolean = false;
+/**
+ * @brief function to init webSocekt
+ */
 function InitWS() : void {
     console.log("Opening a webSocket");
     websocket = new WebSocket(gateway);
+    ///Setting up the function
     websocket.onopen = onOpen;
     websocket.onclose = onClose;
     websocket.onmessage = onMessage;
 }
 
+/**
+ * @brief Function to be called when the websocket connection is opened
+ * @param e Open Event 
+ */
 function onOpen(e : Event) : void {
     console.log("Connection has been opened");
 }
-
+/**
+ * @brief Function to be called when the websocket connection is closed
+ * @param e Close Event
+ */
 function onClose(e : CloseEvent) : void {
     console.log("Connection has been closed");
 }
-
+/**
+ * @brief Function to be called when the websocket received a message
+ * @param e Message Event
+ */
 function onMessage(e : MessageEvent) : void {
-    console.log("Received message from WebSocket");
-    let data : Object = JSON.parse(e.data);
+    let data : Object = JSON.parse(e.data); ///parse the received message to extract the data
     
-    if (data["motorA"] !== undefined) {
+    if (data["motorA"] !== undefined) { ///set data for motor A
         if (data["motorA"]["speed"] !== undefined) {
             let range : HTMLElement = document.getElementById("left-motor-speed");
             (<HTMLInputElement>range).value = data["motorA"]["speed"];
             let value : HTMLElement = document.getElementById("left-range-value");
-            value.innerHTML = data["motorA"]["speed"] + " km/h";
+            value.innerHTML = data["motorA"]["speed"] + " turn/s";
         }
-        else if(data["motorA"]["state"] !== undefined){
+        if(data["motorA"]["state"] !== undefined){
             if( (data["motorA"]["state"] === "on" && state === false) || (data["motorA"]["state"] === "off" && state === true)) {
                 toggle(e);
             }
         }
     }
-    else if (data["motorB"] !== undefined) {
+    if (data["motorB"] !== undefined) {///set data for motor B
         if (data["motorB"]["speed"] !== undefined) {
             let range : HTMLElement = document.getElementById("right-motor-speed");
             (<HTMLInputElement>range).value = data["motorB"]["speed"];
             let value : HTMLElement = document.getElementById("right-range-value");
-            value.innerHTML = data["motorB"]["speed"] + " km/h";
+            value.innerHTML = data["motorB"]["speed"] + " turn/s";
         }
-        else if(data["motorB"]["state"] !== undefined){
+        if(data["motorB"]["state"] !== undefined){
             if( (data["motorB"]["state"] === "on" && state2 === false) || (data["motorB"]["state"] === "off" && state2 === true)) {
                 toggle2(e);
             }
         }
     }
+    if(data["CurrentSpeedB"] !== undefined) {///set data for values B
+        if(valuesB.length > 20) {
+            valuesB.shift();
+        }
+        valuesB.push(data["CurrentSpeedB"]);
+    }
+    if(data["CurrentSpeedA"] !== undefined) {///set data for values A
+        if(valuesA.length > 20) {
+            valuesA.shift();
+        }
+        valuesA.push(data["CurrentSpeedA"]);
+    }
 }
-
+/**
+ * @brief Function to be called when the page is load
+ * @param e 
+ */
 function onLoad(e : Event) : void {
     InitWS();
 }
-
+/**
+ * @brief Function to send data to the websocket server
+ * @param e HTLL Event
+ */
 function sendMessage(e : Event) : void {
     e.preventDefault();
+    ///Get the event target
     let elem : HTMLElement = <HTMLElement>e.target;
     let toSend : Object;
-    
+    ///Create the data to send in function of the event target id
     switch (elem.id) {
         case "right-off":
             toSend = {
@@ -110,7 +148,7 @@ function sendMessage(e : Event) : void {
         default:
             break;
     }
-    console.log("Sending message");
+    ///Send the data
     websocket.send(JSON.stringify(toSend));
 }
 
@@ -153,7 +191,7 @@ const onChangeLeft = (e : Event) => {
 }
 
 const updateLeftRangeValue = (value : number) => {
-    document.getElementById("left-range-value").innerHTML = value + " km/h";
+    document.getElementById("left-range-value").innerHTML = value + " turn/s";
 };
 
 const onChangeRight = (e : Event) => {
@@ -162,7 +200,7 @@ const onChangeRight = (e : Event) => {
 }
 
 const updateRightRangeValue = (value : number) => {
-    document.getElementById("right-range-value").innerHTML = value + " km/h";
+    document.getElementById("right-range-value").innerHTML = value + " turn/s";
 };
 
 function toggle3(e : Event) : void {
@@ -180,6 +218,12 @@ function toggle3(e : Event) : void {
         leftDivButtonToggle.classList.remove("forwards");
         leftDivButtonToggle.innerHTML = "BACKWARDS";
     }
+
+    websocket.send(JSON.stringify({
+        motorA: {
+            direction: toggleBtn !== true ? "backwards" : "forwards"
+        }
+    }))
 }
 
 function toggle4(e : Event) : void {
@@ -197,4 +241,10 @@ function toggle4(e : Event) : void {
         rightDivButtonToggle.classList.remove("forwards");
         rightDivButtonToggle.innerHTML = "BACKWARDS";
     }
+
+    websocket.send(JSON.stringify({
+        motorB: {
+            direction: toggleBtn2 !== true ? "backwards" : "forwards"
+        }
+    }))
 }
