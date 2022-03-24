@@ -62,7 +62,7 @@ void setup() {
   attachInterrupt( digitalPinToInterrupt( CAPTOR_MOT2_PIN ), ISR_IncreaseCaptorBCount, RISING);
 
   ///Initialisation of the timer to print and calcul the motors's speed.
-  SpeedPrinting_timer.setInterval(1000, printSpeedMotors);
+  SpeedPrinting_timer.setInterval(100, printSpeedMotors);
   ///Initialisation of the timer to send the speed of both motors to all clients
   SendData_timer.setInterval(100, sendCurrentsSpeed);
 }
@@ -109,7 +109,7 @@ void printSpeedMotors() {
   ///calcul both corrected speed with pid
   motorA->actualSpeed = pid_motorA.subjugationFunction(motorA->state, motorA->speed, motorA->wantedSpeed);
   motorB->actualSpeed = pid_motorB.subjugationFunction(motorB->state, motorB->speed, motorB->wantedSpeed);
-
+  //Serial.println(motorA->actualSpeed);
   ///Reset Captors data
   ResetCaptor(captorA);
   ResetCaptor(captorB);
@@ -127,8 +127,8 @@ void sendCurrentsSpeed() {
   // create our obejct
   JsonObject object = doc.to<JsonObject>();
   ///fill our object
-  object["CurrentSpeedA"] = motorA->speed;
-  object["CurrentSpeedB"] = motorB->speed;
+  object["CurrentSpeedA"] = motorA->actualSpeed;
+  object["CurrentSpeedB"] = motorB->actualSpeed;
   ///serialize our object
   String Data;
   serializeJson(object, Data);
