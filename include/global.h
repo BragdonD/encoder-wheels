@@ -21,5 +21,7 @@
 extern motor *motorA, *motorB; ///Both motors
 extern captor *captorA, *captorB; ///Both Captors
 extern SimpleTimer SpeedPrinting_timer; ///Timer for speed calcul
+extern float kp_A, ki_A, kd_A;
+extern float kp_B, ki_B, kd_B;
 
 #endif // GLOBAL_H

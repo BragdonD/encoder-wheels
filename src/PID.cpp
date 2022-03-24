@@ -138,6 +138,16 @@ float PID::getKd ()
   return m_Kd;
 }
 
+void PID::setKp (float value) {
+  m_Kp = value;
+}
+void PID::setKi (float value) {
+  m_Ki = value;
+}
+void PID::setKd (float value) {
+  m_Kd = value;
+}
+
 /**
  * @brief Function to use the PID Corrector
  * 

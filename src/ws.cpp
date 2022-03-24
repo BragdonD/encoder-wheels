@@ -361,6 +361,43 @@ void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socke
                 motorA->direction = BACKWARD;
             }
         }
+        if(json["kp_a"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            kp_A = json["kp_a"];
+        }
+        if(json["ki_a"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            ki_A = json["ki_a"];
+        }
+        if(json["kd_a"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            kd_A = json["kd_a"];
+        }
+        if(json["kp_b"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            kp_B = json["kp_b"];
+        }
+        if(json["ki_b"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            ki_B = json["ki_b"];
+        }
+        if(json["kd_b"]) {
+            #if DEBUG
+                Serial.println("modif direction motor A");
+            #endif
+            kd_B = json["kd_b"];
+        }
+        
         /**
          * @brief Notify all clients of the modification
          * 

@@ -24,8 +24,10 @@ SimpleTimer SpeedPrinting_timer; ///calcul timer
 SimpleTimer SendData_timer; ///ws timer
 ESP8266WiFi wifis(true, MDNS_NAME);
 WebServer server(100);
-PID pid_motorA(KP_MOTOR_PID,KI_MOTOR_PID,KD_MOTOR_PID);
-PID pid_motorB(KP_MOTOR_PID,KI_MOTOR_PID,KD_MOTOR_PID);
+PID pid_motorA(0,0,0);
+PID pid_motorB(0,0,0);
+float kp_A = 0, ki_A = 0, kd_A = 0;
+float kp_B = 0, ki_B = 0, kd_B = 0;
 
 ///Declaration of the function
 void IRAM_ATTR ISR_IncreaseCaptorBCount();
@@ -98,6 +100,12 @@ void IRAM_ATTR ISR_IncreaseCaptorBCount() {
  * 
  */
 void printSpeedMotors() {
+  pid_motorA.setKp(kp_A);
+  pid_motorA.setKi(ki_A);
+  pid_motorA.setKd(kd_A);
+  pid_motorB.setKp(kp_B);
+  pid_motorB.setKi(ki_B);
+  pid_motorB.setKd(kd_B);
   ///Calcul both speeds from captor data
   motorA->speed = ( (float)captorA->count/(float)CAPTOR_HOLES_NB);
   motorB->speed = ( (float)captorB->count/(float)CAPTOR_HOLES_NB);

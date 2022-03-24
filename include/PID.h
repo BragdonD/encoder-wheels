@@ -27,6 +27,9 @@ public:
     float getKp ();
     float getKi ();
     float getKd ();
+    void setKp (float);
+    void setKi (float);
+    void setKd (float);
 };
 
 #endif // PID_H
