@@ -12,21 +12,26 @@ private:
     float m_Ki = 0;
     float m_Kd = 0;
     float m_LastError = 0;
+
 public:
-    PID(float,float,float);
+    PID();
+    PID(float, float, float);
     ~PID();
-    float subjugationFunction (uint8_t,float,float);
-    void setCumulatedError (float);
+    float subjugationFunction(uint8_t, float, float);
+    void setCumulatedError(float);
     void setConsigne(float);
-    void setError (float);
-    void setLastError (float);
-    float getConsigne ();
-    float getError ();
-    float getLastError ();
-    float getCumulatedError ();
-    float getKp ();
-    float getKi ();
-    float getKd ();
+    void setError(float);
+    void setLastError(float);
+    float getConsigne();
+    float getError();
+    float getLastError();
+    float getCumulatedError();
+    float getKp();
+    float getKi();
+    float getKd();
+    void setKp(float);
+    void setKi(float);
+    void setKd(float);
 };
 
 #endif // PID_H

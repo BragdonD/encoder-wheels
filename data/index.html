@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,43 +10,157 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
     <script type="text/javascript">
         window.addEventListener("load", onLoad);
     </script>
     <div class="wrapper">
         <h1 class="main-title">Squad 1063's Control Panel</h1>
-        <div class="grid">
+        <button id="swap-control" class="separated" onclick="changeControlVision(event)">Union Control</button>
+        <script type="text/javascript">
+            const changeControlVision = (event) => {
+                let button = document.getElementById("swap-control");
+                let left = document.getElementById("left");
+                let right = document.getElementById("right");
+                let both = document.getElementById("both");
+                let grid = document.getElementById("grid");
+
+                if (button.classList.contains("separated")) {
+                    button.classList.remove("separated");
+                    button.classList.add("union");
+                    button.innerText = "Separated Control";
+                    left.classList.add("hidden");
+                    right.classList.add("hidden");
+                    both.classList.remove("hidden");
+                    grid.classList.add("solo");
+                }
+                else {
+                    button.classList.add("separated");
+                    button.classList.remove("union");
+                    button.innerText = "Union Control";
+                    left.classList.remove("hidden");
+                    right.classList.remove("hidden");
+                    both.classList.add("hidden");
+                    grid.classList.remove("solo");
+                }
+            }
+        </script>
+        <div class="grid" id="grid">
             <div id="left" class="container">
+                <div class="settings" onclick="toggleHideLeftWrapper(event)">
+                    <svg viewBox="0 0 36 36" fill="currentColor" height="30" width="30">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M19.842 7.526A1.5 1.5 0 0018.419 6.5h-.838a1.5 1.5 0 00-1.423 1.026l-.352 1.056c-.157.472-.541.827-1.006 1.003a8.93 8.93 0 00-.487.202c-.453.204-.976.225-1.42.002l-.997-.498a1.5 1.5 0 00-1.732.281l-.592.592a1.5 1.5 0 00-.28 1.732l.497.996c.223.445.202.968-.002 1.421-.072.16-.139.323-.202.487-.176.465-.531.849-1.003 1.006l-1.056.352A1.5 1.5 0 006.5 17.581v.838a1.5 1.5 0 001.026 1.423l1.056.352c.472.157.827.541 1.003 1.006.063.164.13.327.202.487.204.453.225.976.002 1.42l-.498.997a1.5 1.5 0 00.281 1.732l.593.592a1.5 1.5 0 001.73.28l.998-.497c.444-.223.967-.202 1.42.002.16.072.323.139.487.202.465.176.849.531 1.006 1.003l.352 1.056a1.5 1.5 0 001.423 1.026h.838a1.5 1.5 0 001.423-1.026l.352-1.056c.157-.472.541-.827 1.006-1.003.164-.063.327-.13.486-.202.454-.204.977-.225 1.421-.002l.997.498a1.5 1.5 0 001.732-.281l.592-.592a1.5 1.5 0 00.28-1.732l-.497-.996c-.223-.445-.202-.968.002-1.421.072-.16.139-.323.202-.487.176-.465.531-.849 1.003-1.006l1.056-.352a1.5 1.5 0 001.026-1.423v-.838a1.5 1.5 0 00-1.026-1.423l-1.056-.352c-.472-.157-.827-.541-1.003-1.006a8.991 8.991 0 00-.202-.487c-.204-.453-.225-.976-.002-1.42l.498-.997a1.5 1.5 0 00-.281-1.732l-.593-.592a1.5 1.5 0 00-1.73-.28l-.998.497c-.444.223-.967.202-1.42-.002a8.938 8.938 0 00-.487-.202c-.465-.176-.849-.531-1.006-1.003l-.352-1.056zM18 23.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="play" onclick="toggleLeftPlay(event)">
+                    <svg class="white" id="left-play" fill="currentColor" version="1.1" viewBox="0 0 36 36" height="30" width="30">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z" id="ytp-id-49"></path>
+                    </svg>
+                </div>
                 <h1>Motor Left</h1>
                 <div id="left-serial-container" class="serial-wrapper">
                     <canvas id="left-serial"></canvas>
                 </div>
-                <div class="input-wrapper">
-                    <input type="range" id="left-motor-speed" name="left-motor-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeLeft(event)" onmousemove="updateLeftRangeValue(this.value)">
+                <div id="left-input-wrapper" class="input-wrapper">
+                    <input type="range" id="left-motor-speed" name="left-motor-speed" value="0" min="0" max="2"
+                        step="0.1" onchange="onChangeLeft(event)" onmousemove="updateLeftRangeValue(this.value)"
+                        disabled>
                     <h2 id="left-range-value">0 turn/s</h2>
                     <div id="left-input-container" class="off before">
-                        <button id="left-on" class="on">ON</button>
-                        <button id="left-off" class="off">OFF</button>
+                        <button id="left-on" class="on" onclick="toggle(event)">ON</button>
+                        <button id="left-off" class="off" onclick="toggle(event)">OFF</button>
                     </div>
                     <script type="text/javascript">
-                        document.getElementById("left-off").addEventListener("click", toggle);
+                       // document.getElementById("left-off").addEventListener("click", toggle);
                         document.getElementById("left-off").addEventListener("click", sendMessage);
-                        document.getElementById("left-on").addEventListener("click", toggle);
+                       // document.getElementById("left-on").addEventListener("click", toggle);
                         document.getElementById("left-on").addEventListener("click", sendMessage);
                     </script>
                     <div>
                         <button id="toggle-left-direction" class="forwards" onclick="toggle3(event)">FORWARDS</button>
                     </div>
                 </div>
+                <div id="left-input-coeff" class="input-wrapper hidden">
+                    <div class="coeff-wrapper">
+                        <label for="left-kp">KP</label>
+                        <input type="range" id="left-kp" name="left-kp" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeLeftKp(this.value)">
+                        <div>
+                            <p id="left-kp-value">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="coeff-wrapper">
+                        <label for="left-ki">KI</label>
+                        <input type="range" id="left-ki" name="left-ki" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeLeftKi(this.value)">
+                        <div>
+                            <p id="left-ki-value">0</p>
+                        </div>
+                    </div>
+                    <div class="coeff-wrapper">
+                        <label for="left-kd">KD</label>
+                        <input type="range" id="left-kd" name="left-kd" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeLeftKd(this.value)">
+                        <div>
+                           <p id="left-kd-value">0</p> 
+                        </div>
+                    </div>
+
+                </div>
             </div>
+            <script type="text/javascript">
+                let LeftKPValue = document.getElementById("left-kp-value");
+                function onChangeLeftKp(value) {
+                    LeftKPValue.innerHTML = value;
+                }
+            </script>
+            <script type="text/javascript">
+                let LeftKIValue = document.getElementById("left-ki-value");
+                function onChangeLeftKi(value) {
+                    LeftKIValue.innerHTML = value;
+                }
+            </script>
+            <script type="text/javascript">
+                let LeftKDValue = document.getElementById("left-kd-value");
+                function onChangeLeftKd(value) {
+                    LeftKDValue.innerHTML = value;
+                }
+            </script>
+            <script type="text/javascript">
+                let LeftInputWrapper = document.getElementById("left-input-wrapper");
+                let LeftInputCoeff = document.getElementById("left-input-coeff");
+                function toggleHideLeftWrapper(e) {
+                    if (LeftInputWrapper.classList.contains("hidden")) {
+                        LeftInputWrapper.classList.remove("hidden");
+                        LeftInputCoeff.classList.add("hidden");
+                        return;
+                    }
+                    LeftInputWrapper.classList.add("hidden");
+                    LeftInputCoeff.classList.remove("hidden");
+                }
+            </script>
             <div id="right" class="container">
+                <div class="settings" onclick="toggleHideRightWrapper(event)">
+                    <svg viewBox="0 0 36 36" fill="currentColor" height="30" width="30">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M19.842 7.526A1.5 1.5 0 0018.419 6.5h-.838a1.5 1.5 0 00-1.423 1.026l-.352 1.056c-.157.472-.541.827-1.006 1.003a8.93 8.93 0 00-.487.202c-.453.204-.976.225-1.42.002l-.997-.498a1.5 1.5 0 00-1.732.281l-.592.592a1.5 1.5 0 00-.28 1.732l.497.996c.223.445.202.968-.002 1.421-.072.16-.139.323-.202.487-.176.465-.531.849-1.003 1.006l-1.056.352A1.5 1.5 0 006.5 17.581v.838a1.5 1.5 0 001.026 1.423l1.056.352c.472.157.827.541 1.003 1.006.063.164.13.327.202.487.204.453.225.976.002 1.42l-.498.997a1.5 1.5 0 00.281 1.732l.593.592a1.5 1.5 0 001.73.28l.998-.497c.444-.223.967-.202 1.42.002.16.072.323.139.487.202.465.176.849.531 1.006 1.003l.352 1.056a1.5 1.5 0 001.423 1.026h.838a1.5 1.5 0 001.423-1.026l.352-1.056c.157-.472.541-.827 1.006-1.003.164-.063.327-.13.486-.202.454-.204.977-.225 1.421-.002l.997.498a1.5 1.5 0 001.732-.281l.592-.592a1.5 1.5 0 00.28-1.732l-.497-.996c-.223-.445-.202-.968.002-1.421.072-.16.139-.323.202-.487.176-.465.531-.849 1.003-1.006l1.056-.352a1.5 1.5 0 001.026-1.423v-.838a1.5 1.5 0 00-1.026-1.423l-1.056-.352c-.472-.157-.827-.541-1.003-1.006a8.991 8.991 0 00-.202-.487c-.204-.453-.225-.976-.002-1.42l.498-.997a1.5 1.5 0 00-.281-1.732l-.593-.592a1.5 1.5 0 00-1.73-.28l-.998.497c-.444.223-.967.202-1.42-.002a8.938 8.938 0 00-.487-.202c-.465-.176-.849-.531-1.006-1.003l-.352-1.056zM18 23.5a5.5 5.5 0 100-11 5.5 5.5 0 000 11z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="play" onclick="toggleRightPlay(event)">
+                    <svg class="white" id="right-play" fill="currentColor" version="1.1" viewBox="0 0 36 36" height="30" width="30">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z" id="ytp-id-49"></path>
+                    </svg>
+                </div>
                 <h1>Motor Right</h1>
                 <div id="right-serial-container" class="serial-wrapper">
                     <canvas id="right-serial"></canvas>
                 </div>
-                <div class="input-wrapper">
-                    <input type="range" id="right-motor-speed"  name="right-motor-speed" value="0" min="0" max="2" step="0.1" onchange="onChangeRight(event)"  onmousemove="updateRightRangeValue(this.value)">
+                <div id="right-input-wrapper" class="input-wrapper">
+                    <input type="range" id="right-motor-speed" name="right-motor-speed" value="0" min="0" max="2"
+                        step="0.1" onchange="onChangeRight(event)" onmousemove="updateRightRangeValue(this.value)"
+                        disabled>
                     <h2 id="right-range-value">0 turn/s</h2>
                     <div id="right-input-container" class="off before">
                         <button id="right-on" class="on">ON</button>
@@ -61,6 +176,86 @@
                         <button id="toggle-right-direction" class="forwards" onclick="toggle4(event)">FORWARDS</button>
                     </div>
                 </div>
+                <div id="right-input-coeff" class="input-wrapper hidden">
+                    <div class="coeff-wrapper">
+                        <label for="right-kp">KP</label>
+                        <input type="range" id="right-kp" name="right-kp" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeRightKp(this.value)">
+                        <div>
+                            <p id="right-kp-value">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="coeff-wrapper">
+                        <label for="right-ki">KI</label>
+                        <input type="range" id="right-ki" name="right-ki" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeRightKi(this.value)">
+                        <div>
+                            <p id="right-ki-value">0</p>
+                        </div>
+                    </div>
+                    <div class="coeff-wrapper">
+                        <label for="right-kd">KD</label>
+                        <input type="range" id="right-kd" name="right-kd" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeRightKd(this.value)">
+                        <div>
+                           <p id="right-kd-value">0</p> 
+                        </div>
+                    </div>
+
+                </div>
+                <script type="text/javascript">
+                    let RightKPValue = document.getElementById("right-kp-value");
+                    function onChangeRightKp(value) {
+                        RightKPValue.innerHTML = value;
+                    }
+                </script>
+                <script type="text/javascript">
+                    let RightKIValue = document.getElementById("right-ki-value");
+                    function onChangeRightKi(value) {
+                        RightKIValue.innerHTML = value;
+                    }
+                </script>
+                <script type="text/javascript">
+                    let RightKDValue = document.getElementById("right-kd-value");
+                    function onChangeRightKd(value) {
+                        RightKDValue.innerHTML = value;
+                    }
+                </script>
+                <script type="text/javascript">
+                    let RightInputWrapper = document.getElementById("right-input-wrapper");
+                    let RightInputCoeff = document.getElementById("right-input-coeff");
+                    function toggleHideRightWrapper(e) {
+                        if (RightInputWrapper.classList.contains("hidden")) {
+                            RightInputWrapper.classList.remove("hidden");
+                            RightInputCoeff.classList.add("hidden");
+                            return;
+                        }
+                        RightInputWrapper.classList.add("hidden");
+                        RightInputCoeff.classList.remove("hidden");
+                    }
+                </script>
+            </div>
+            <div id="both" class="container hidden">
+                <h1>Both motors</h1>
+                <div id="both-serial-container" class="serial-wrapper">
+                    <canvas id="both-serial"></canvas>
+                </div>
+                <div class="input-wrapper">
+                    <input type="range" id="motors-speed" name="motors-speed" value="0" min="0" max="2" step="0.1"
+                        onchange="onChangeBoth(event)" onmousemove="updateBothRangeValue(this.value)" disabled>
+                    <h2 id="both-range-value">0 turn/s</h2>
+                    <div id="both-input-container" class="off before">
+                        <button id="both-on" class="on">ON</button>
+                        <button id="both-off" class="off">OFF</button>
+                    </div>
+                    <script type="text/javascript">
+                        document.getElementById("both-off").addEventListener("click", toggle5);
+                        document.getElementById("both-off").addEventListener("click", sendMessage);
+                        document.getElementById("both-on").addEventListener("click", toggle5);
+                        document.getElementById("both-on").addEventListener("click", sendMessage);
+                    </script>
+                    <div>
+                        <button id="toggle-both-direction" class="forwards" onclick="toggle6(event)">FORWARDS</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -69,8 +264,7 @@
     </script>
     <script type="text/javascript">
         let counter = 0;
-        let counter2 = 0;
-        
+
         let xValuesLeft = [0];
         let yValuesLeft = [0];
         ///create the serial series for the left motors
@@ -97,23 +291,23 @@
                     },]
             },
             options: {
-                legend: {display: false},
+                legend: { display: false },
                 scales: {
-                yAxes: [{
-                    ticks: {
-                        fontColor: "#fff",
-                        fontSize: 10,
-                    },
-                    min: 0,
-                    max: 2.1,
-                }],
-                xAxes: [{
-                    ticks: {
-                        fontColor: "#fff",
-                        fontSize: 10,
-                    }
-                }]
-            }
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "#fff",
+                            fontSize: 10,
+                        },
+                        min: 0,
+                        max: 2.1,
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: "#fff",
+                            fontSize: 10,
+                        }
+                    }]
+                }
             },
             color: "#fff",
         };
@@ -123,25 +317,26 @@
         function UpdateLeftSerial(e) {
             counter += 100;
             xValuesLeft.push(counter);
-            
+
             yValuesLeft.push(document.getElementById("left-motor-speed").value)
-            if(yValuesLeft.length > 100) {
+            if (yValuesLeft.length > 100) {
                 yValuesLeft.shift();
             }
-            if(xValuesLeft.length > 100) {
+            if (xValuesLeft.length > 100) {
                 xValuesLeft.shift();
             }
             chartLeft.update();
         }
-        setInterval(() => {chartLeft.update();}, 10);
-        setInterval(UpdateLeftSerial, 100);
+        let LeftInterval1 = setInterval(() => { chartLeft.update(); }, 10);
+        let LeftInterval2 = setInterval(UpdateLeftSerial, 100);
     </script>
-    <script type="text/javascript">      
+    <script type="text/javascript">
         let xValuesRight = [0];
         let yValuesRight = [0];
+        let counter2 = 0;
 
         ///create the serial series for the right motors
-        let configRight= {
+        let configRight = {
             type: "line",
             data: {
                 labels: xValuesRight,
@@ -162,26 +357,26 @@
                         borderColor: "#FFFF00",
                         data: valuesB,
                     },
-                    ]
+                ]
             },
             options: {
-                legend: {display: false},
+                legend: { display: false },
                 scales: {
-                yAxes: [{
-                    ticks: {
-                        fontColor: "#fff",
-                        fontSize: 10,
-                    },
-                    min: 0,
-                    max: 2.1,
-                }],
-                xAxes: [{
-                    ticks: {
-                        fontColor: "#fff",
-                        fontSize: 10,
-                    }
-                }]
-            }
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "#fff",
+                            fontSize: 10,
+                        },
+                        min: 0,
+                        max: 2.1,
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: "#fff",
+                            fontSize: 10,
+                        }
+                    }]
+                }
             },
             color: "#fff",
         };
@@ -189,20 +384,126 @@
         const chartRight = new Chart("right-serial", configRight);
 
         function UpdateRightSerial(e) {
-            counter += 100;
-            xValuesRight.push(counter);
+            counter2 += 100;
+            xValuesRight.push(counter2);
 
             yValuesRight.push(document.getElementById("right-motor-speed").value);
-            if(yValuesRight.length > 100) {
+            if (yValuesRight.length > 100) {
                 yValuesRight.shift();
             }
-            if(xValuesRight.length > 100) {
+            if (xValuesRight.length > 100) {
                 xValuesRight.shift();
             }
             chartRight.update();
         }
-        setInterval(() => {chartRight.update()}, 10);
-        setInterval(UpdateRightSerial, 100);
+        let RightInterval1 = setInterval(() => { chartRight.update() }, 10);
+        let RightInterval2 = setInterval(UpdateRightSerial, 100);
+    </script>
+    <script type="text/javascript">
+        let yValuesBoth = [0];
+        let xValuesBoth = [0];
+        let counter3 = 0;
+        let configBoth = {
+            type: "line",
+            data: {
+                labels: xValuesBoth,
+                datasets: [
+                    {
+                        fill: false,
+                        lineTension: 0,
+                        pointRadius: 1,
+                        backgroundColor: "#fff",
+                        borderColor: "#fff",
+                        data: yValuesBoth,
+                    },
+                    {
+                        fill: false,
+                        lineTension: 0,
+                        pointRadius: 1,
+                        backgroundColor: "#FFFF00",
+                        borderColor: "#FFFF00",
+                        data: valuesA,
+                    },
+                    {
+                        fill: false,
+                        lineTension: 0,
+                        pointRadius: 1,
+                        backgroundColor: "#FF0000",
+                        borderColor: "#FF0000",
+                        data: valuesB,
+                    },]
+            },
+            options: {
+                legend: { display: false },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "#fff",
+                            fontSize: 10,
+                        },
+                        min: 0,
+                        max: 2.1,
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: "#fff",
+                            fontSize: 10,
+                        }
+                    }]
+                }
+            },
+            color: "#fff",
+        };
+
+        const chartBoth = new Chart("both-serial", configBoth);
+
+        function UpdateBothSerial(e) {
+            counter3 += 100;
+            xValuesBoth.push(counter3);
+
+            yValuesBoth.push(document.getElementById("motors-speed").value)
+            if (yValuesBoth.length > 100) {
+                yValuesBoth.shift();
+            }
+            if (xValuesBoth.length > 100) {
+                xValuesBoth.shift();
+            }
+            chartBoth.update();
+        }
+        setInterval(() => { chartBoth.update(); }, 10);
+        setInterval(UpdateBothSerial, 100);
+    </script>
+    <script type="text/javascript">
+        let LeftPlaybutton = document.getElementById("left-play");
+        function toggleLeftPlay(e) {
+            if (LeftPlaybutton.classList.contains("disabled")) {
+                LeftPlaybutton.classList.remove("disabled");
+                LeftInterval1 = setInterval(() => { chartLeft.update() }, 10);
+                LeftInterval2 = setInterval(UpdateLeftSerial, 100);
+            }
+            else {
+                LeftPlaybutton.classList.add("disabled");
+                clearInterval(LeftInterval1);
+                clearInterval(LeftInterval2);
+            }
+            
+        }
+    </script>
+    <script type="text/javascript">
+        let RightPlaybutton = document.getElementById("right-play");
+        function toggleRightPlay(e) {
+            if (RightPlaybutton.classList.contains("disabled")) {
+                RightPlaybutton.classList.remove("disabled");
+                RightInterval1 = setInterval(() => { chartRight.update() }, 10);
+                RightInterval2 = setInterval(UpdateRightSerial, 100);
+            }
+            else {
+                RightPlaybutton.classList.add("disabled");
+                clearInterval(RightInterval1);
+                clearInterval(RightInterval2);
+            }
+        }
     </script>
 </body>
+
 </html>
