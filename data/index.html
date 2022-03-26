@@ -70,13 +70,13 @@
                         disabled>
                     <h2 id="left-range-value">0 turn/s</h2>
                     <div id="left-input-container" class="off before">
-                        <button id="left-on" class="on">ON</button>
-                        <button id="left-off" class="off">OFF</button>
+                        <button id="left-on" class="on" onclick="toggle(event)">ON</button>
+                        <button id="left-off" class="off" onclick="toggle(event)">OFF</button>
                     </div>
                     <script type="text/javascript">
-                        document.getElementById("left-off").addEventListener("click", toggle);
+                       // document.getElementById("left-off").addEventListener("click", toggle);
                         document.getElementById("left-off").addEventListener("click", sendMessage);
-                        document.getElementById("left-on").addEventListener("click", toggle);
+                       // document.getElementById("left-on").addEventListener("click", toggle);
                         document.getElementById("left-on").addEventListener("click", sendMessage);
                     </script>
                     <div>
@@ -86,7 +86,7 @@
                 <div id="left-input-coeff" class="input-wrapper hidden">
                     <div class="coeff-wrapper">
                         <label for="left-kp">KP</label>
-                        <input type="range" id="left-kp" name="left-kp" value="0" min="0" max="10" step="0.1" onchange="onChangeRight(event)" onmousemove="onChangeLeftKp(this.value)">
+                        <input type="range" id="left-kp" name="left-kp" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeLeftKp(this.value)">
                         <div>
                             <p id="left-kp-value">0</p>
                         </div>
@@ -94,14 +94,14 @@
                     
                     <div class="coeff-wrapper">
                         <label for="left-ki">KI</label>
-                        <input type="range" id="left-ki" name="left-ki" value="0" min="0" max="10" step="0.1" onchange="onChangeRight(event)" onmousemove="onChangeLeftKi(this.value)">
+                        <input type="range" id="left-ki" name="left-ki" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeLeftKi(this.value)">
                         <div>
                             <p id="left-ki-value">0</p>
                         </div>
                     </div>
                     <div class="coeff-wrapper">
                         <label for="left-kd">KD</label>
-                        <input type="range" id="left-kd" name="left-kd" value="0" min="0" max="10" step="0.1" onchange="onChangeRight(event)" onmousemove="onChangeLeftKd(this.value)">
+                        <input type="range" id="left-kd" name="left-kd" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeLeftKd(this.value)">
                         <div>
                            <p id="left-kd-value">0</p> 
                         </div>
@@ -179,7 +179,7 @@
                 <div id="right-input-coeff" class="input-wrapper hidden">
                     <div class="coeff-wrapper">
                         <label for="right-kp">KP</label>
-                        <input type="range" id="right-kp" name="right-kp" value="0" min="0" max="10" step="0.1" onchange="onChangeRight(event)" onmousemove="onChangeRightKp(this.value)">
+                        <input type="range" id="right-kp" name="right-kp" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeRightKp(this.value)">
                         <div>
                             <p id="right-kp-value">0</p>
                         </div>
@@ -187,14 +187,14 @@
                     
                     <div class="coeff-wrapper">
                         <label for="right-ki">KI</label>
-                        <input type="range" id="right-ki" name="right-ki" value="0" min="0" max="10" step="0.1" onchange="onChangeRight(event)" onmousemove="onChangeRightKi(this.value)">
+                        <input type="range" id="right-ki" name="right-ki" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeRightKi(this.value)">
                         <div>
                             <p id="right-ki-value">0</p>
                         </div>
                     </div>
                     <div class="coeff-wrapper">
                         <label for="right-kd">KD</label>
-                        <input type="range" id="right-kd" name="right-kd" value="0" min="0" max="10" step="0.1" onchange="onChangeRight(event)" onmousemove="onChangeRightKd(this.value)">
+                        <input type="range" id="right-kd" name="right-kd" value="0" min="0" max="10" step="0.1" onchange="sendMessage(event)" onmousemove="onChangeRightKd(this.value)">
                         <div>
                            <p id="right-kd-value">0</p> 
                         </div>

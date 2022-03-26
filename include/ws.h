@@ -4,9 +4,9 @@
  * @brief header file for the WebServer class and all the functions to handle the websocket
  * @version 0.1
  * @date 2022-03-21
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 #if !defined(WS_H)
 #define WS_H
@@ -26,31 +26,31 @@
 /**
  * @brief Class to handle the webServer and webSocket together.
  * It also stores the Arduino json encoder.
- * 
+ *
  */
 class WebServer
 {
-    public:
-        WebServer(uint8_t _port);
-        ~WebServer();
+public:
+    WebServer(uint8_t _port);
+    ~WebServer();
 
-        void setup();
-        void run();
-        static String processor(const String& var);
+    void setup();
+    void run();
+    static String processor(const String &var);
 
-        String createJWT(String &Ip);
-        bool checkJWT(String &JWT);
-        bool checkSecurity(String &ssid, String &password);
+    String createJWT(String &Ip);
+    bool checkJWT(String &JWT);
+    bool checkSecurity(String &ssid, String &password);
 
-        void initWS();
-        const AsyncWebSocket& getWS() const;
+    void initWS();
+    const AsyncWebSocket &getWS() const;
 
-    private:
-        uint8_t m_port;
-        AsyncWebServer m_server;
-        AsyncWebSocket m_ws;
-        ArduinoJWT m_encoder;
-        std::vector<String> m_JWT; 
+private:
+    uint8_t m_port;
+    AsyncWebServer m_server;
+    AsyncWebSocket m_ws;
+    ArduinoJWT m_encoder;
+    std::vector<String> m_JWT;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ class WebServer
  */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void handleWSMessage(void* arg, uint8_t *data, size_t len, AsyncWebSocket *socket);
+void handleWSMessage(void *arg, uint8_t *data, size_t len, AsyncWebSocket *socket);
 void onEvent(AsyncWebSocket *ws, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len);
 void notifyClients(String &data, AsyncWebSocket *ws);
 void sendCurrentsSpeed();
