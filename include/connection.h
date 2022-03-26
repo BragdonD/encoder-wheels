@@ -17,6 +17,8 @@
 #include "secret.h"
 #include "settings.h"
 
+#define LED_WIFI 15U
+
 class ESP8266WiFi {
     public:
         ESP8266WiFi(bool _useMDNS = true, String _mdnsName = "");
