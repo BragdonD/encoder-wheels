@@ -10,7 +10,12 @@
  */
 #include "PID.h"
 
+/**
+ * @brief Construct a new PID::PID object
+ * 
+ */
 PID::PID() : m_Kp(0), m_Ki(0), m_Kd(0) {}
+
 /**
  * @brief Construct a new PID::PID object
  *
@@ -18,6 +23,8 @@ PID::PID() : m_Kp(0), m_Ki(0), m_Kd(0) {}
  * @param _ki
  * @param _kd
  */
+
+[[deprecated("Cannot be used in the last part of the project because we need to declare PID object inside header global.h as extern")]]
 PID::PID(float _kp, float _ki, float _kd) : m_Kp(_kp), m_Ki(_ki), m_Kd(_kd)
 {
 }
