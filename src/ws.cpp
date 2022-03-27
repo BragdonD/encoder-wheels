@@ -1,6 +1,6 @@
 /**
  * @file ws.cpp
- * @author DUCLOS Thomas
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief source file for the WebServer class
  * @version 0.1
  * @date 2022-03-21

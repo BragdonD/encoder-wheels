@@ -1,6 +1,6 @@
 /**
  * @file PID.cpp
- * @author your name (you@domain.com)
+ * @author DUCLOS Thomaas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief
  * @version 0.1
  * @date 2022-03-23

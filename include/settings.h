@@ -1,6 +1,6 @@
 /**
  * @file settings.h
- * @author THOMAS DUCLOS
+ * @author THOMAS DUCLOS - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief this file contain all the settings of the project
  * @version 0.1
  * @date 2022-03-21
@@ -13,5 +13,6 @@
 
 // Handle the communication series. When set to false it makes the program a litle bit faster
 #define DEBUG false
+#define MOTOR_TEST false
 
 #endif // SETTINGS_H

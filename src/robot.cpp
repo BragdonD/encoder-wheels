@@ -1,6 +1,6 @@
 /**
  * @file robot.cpp
- * @author your name (you@domain.com)
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief This file contain all the function relative to the robot.h header. It represents the first part of the project.
  * @version 0.1
  * @date 2022-02-21

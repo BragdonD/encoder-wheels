@@ -1,6 +1,6 @@
 /**
  * @file motor.cpp
- * @author DUCLOS Thomas
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief This file contain all the function relative to the motor.h header. It represents the first part of the project.
  * @version 1.0
  * @date 2022-02-15
