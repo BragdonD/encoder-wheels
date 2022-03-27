@@ -1,6 +1,6 @@
 /**
  * @file secret.h
- * @author DUCLOS Thomas
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief file to contain all the secret data. It is not the ideal to store it inside a .h file thought
  * @version 0.1
  * @date 2022-03-21
@@ -11,13 +11,13 @@
 #if !defined(SECRET_H)
 #define SECRET_H
 
-#define WIFI_SSID                   \
-    {                               \
-        "Livebox-5630", "Rhobébou" \
+#define WIFI_SSID                        \
+    {                                    \
+        "Livebox-5630", "Rhobébou", "IK" \
     }
-#define WIFI_PASSWORD \
-    {                 \
-        "Thomfred26"  \
+#define WIFI_PASSWORD                               \
+    {                                               \
+        "Thomfred26", "th/2021,duclos", "ibrahim10" \
     }
 #define WIFI_NB 1
 #define MDNS_NAME "squad1063"

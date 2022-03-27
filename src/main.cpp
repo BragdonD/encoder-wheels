@@ -1,6 +1,6 @@
 /**
  * @file main.cpp
- * @author Thomas DUCLOS
+ * @author Thomas DUCLOS - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief This is the main file of the project, with the setup and loop function
  * @version 0.1
  * @date 2022-02-21
@@ -70,6 +70,13 @@ void setup()
   SpeedPrinting_timer.setInterval(1000, printSpeedMotors);
   /// Initialisation of the timer to send the speed of both motors to all clients
   SendData_timer.setInterval(100, sendCurrentsSpeed);
+
+#if MOTOR_TEST == true
+  motorA->actualSpeed = 1.7;
+  motorB->actualSpeed = 1.7;
+  motorA->state = ON;
+  motorB->state = ON;
+#endif
 }
 
 void loop()
@@ -78,15 +85,16 @@ void loop()
   Moove(*motorB);
   SpeedPrinting_timer.run(); /// Need to be called to make the timer works
   SendData_timer.run();
+#if MOTOR_TEST == false
   wifis.run();
   server.run();
-
   pid_motorA.setKp(kp_A);
   pid_motorA.setKi(ki_A);
   pid_motorA.setKd(kd_A);
   pid_motorB.setKp(kp_B);
   pid_motorB.setKi(ki_B);
   pid_motorB.setKd(kd_B);
+#endif
   digitalWrite(LED_STATE_MOTOR1, motorA->state);
   digitalWrite(LED_STATE_MOTOR2, motorB->state);
 }
@@ -118,15 +126,21 @@ void printSpeedMotors()
   /// Calcul both speeds from captor data
   motorA->speed = ((float)captorA->count / (float)CAPTOR_HOLES_NB);
   motorB->speed = ((float)captorB->count / (float)CAPTOR_HOLES_NB);
+#if MOTOR_TEST == true
+  Serial.print("motor A speed : "); Serial.println(motorA->speed);
+  Serial.print("motor B speed : "); Serial.println(motorB->speed);
+  Serial.print("\n\n");
+#endif
 /// print speed for both motors
 #if DEBUG
   PrintMotorSpeed(*motorA, "A");
   PrintMotorSpeed(*motorB, "B");
 #endif
+#if MOTOR_TEST == false
   /// calcul both corrected speed with pid
   motorA->actualSpeed = pid_motorA.subjugationFunction(motorA->state, motorA->speed, motorA->wantedSpeed);
   motorB->actualSpeed = pid_motorB.subjugationFunction(motorB->state, motorB->speed, motorB->wantedSpeed);
-  // Serial.println(motorA->actualSpeed);
+#endif
   /// Reset Captors data
   ResetCaptor(captorA);
   ResetCaptor(captorB);

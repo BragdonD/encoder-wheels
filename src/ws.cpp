@@ -1,6 +1,6 @@
 /**
  * @file ws.cpp
- * @author DUCLOS Thomas
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief source file for the WebServer class
  * @version 0.1
  * @date 2022-03-21
@@ -48,7 +48,7 @@ void WebServer::setup()
     m_server.on("/login", HTTP_GET, [this](AsyncWebServerRequest *request)
                 {
 #if DEBUG
-            Serial.println("get /login.html asked");
+        Serial.println("get /login.html asked");
 #endif
         request->send(LittleFS, "./login.html", String(), false); });
 
@@ -132,7 +132,7 @@ void WebServer::setup()
 #if DEBUG
             Serial.println("get /index.css asked");
 #endif
-        request->send(LittleFS, "./index.css", "text/css"); });
+            request->send(LittleFS, "./index.css", "text/css"); });
 
     /// index css.map file path
     m_server.on("/index.css.map", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -140,7 +140,7 @@ void WebServer::setup()
 #if DEBUG
             Serial.println("get /index.css.map asked");
 #endif
-        request->send(LittleFS, "./index.css.map", "text/css"); });
+            request->send(LittleFS, "./index.css.map", "text/css"); });
 
     /// index scss file path
     m_server.on("/index.scss", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -148,7 +148,7 @@ void WebServer::setup()
 #if DEBUG
             Serial.println("get /index.scss asked");
 #endif
-        request->send(LittleFS, "./index.scss", "text/css"); });
+            request->send(LittleFS, "./index.scss", "text/css"); });
 
     /// index js file path
     m_server.on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -156,7 +156,7 @@ void WebServer::setup()
 #if DEBUG
             Serial.println("get /index.js asked");
 #endif
-        request->send(LittleFS, "./index.js", "text/javascript"); });
+            request->send(LittleFS, "./index.js", "text/javascript"); });
 
     /// index js.map file path
     m_server.on("/index.js.map", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -164,7 +164,7 @@ void WebServer::setup()
 #if DEBUG
             Serial.println("get /index.js.map asked");
 #endif
-        request->send(LittleFS, "./index.js.map", "text/javascript"); });
+            request->send(LittleFS, "./index.js.map", "text/javascript"); });
 
     /// index ts file path
     m_server.on("/index.ts", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -172,7 +172,7 @@ void WebServer::setup()
 #if DEBUG
             Serial.println("get /index.ts asked");
 #endif
-        request->send(LittleFS, "./index.ts", "text/javascript"); });
+            request->send(LittleFS, "./index.ts", "text/javascript"); });
 
     /// Handle Cors request
     m_server.onNotFound([](AsyncWebServerRequest *request)
@@ -186,41 +186,40 @@ void WebServer::setup()
     /// Handler Json for the post method on login path
     AsyncCallbackJsonWebHandler *handler = new AsyncCallbackJsonWebHandler("/login", [this](AsyncWebServerRequest *request, JsonVariant &json)
                                                                            {
-                                                                               JsonObject jsonObj = json.as<JsonObject>(); /// transform the data in a Json Object
-                                                                               /// Check if the two key exist for authentification
-                                                                               if (!jsonObj.containsKey("ssid") || !jsonObj.containsKey("password"))
-                                                                               {
-                                                                                   /// bad request
-                                                                                   request->send(404, "text/plain", "wrong password/ssid");
-                                                                               }
-                                                                               else
-                                                                               {
-                                                                                   /// get both key value
-                                                                                   String ssid = jsonObj["ssid"];
-                                                                                   String password = jsonObj["password"];
+            JsonObject jsonObj = json.as<JsonObject>(); /// transform the data in a Json Object
+            /// Check if the two key exist for authentification
+            if (!jsonObj.containsKey("ssid") || !jsonObj.containsKey("password"))
+            {
+                /// bad request
+                request->send(404, "text/plain", "wrong password/ssid");
+            }
+            else
+            {
+                /// get both key value
+                String ssid = jsonObj["ssid"];
+                String password = jsonObj["password"];
 
-                                                                                   /// check the ssid and the password
-                                                                                   if (checkSecurity(ssid, password))
-                                                                                   {
-                                                                                       /// correct password and ssid
+                /// check the ssid and the password
+                if (checkSecurity(ssid, password))
+                {
+                    /// correct password and ssid
 
-                                                                                       /// create a response
-                                                                                       AsyncWebServerResponse *response = request->beginResponse(201, "text/plain", "accepted");
-                                                                                       /// create a cookie for authentification purpose
-                                                                                       String clientIp = request->client()->localIP().toString();
-                                                                                       String Cookie = ("ACCESS=" + createJWT(clientIp) + ";SameSite=Strict");
-                                                                                       /// set the cookie
-                                                                                       response->addHeader("Set-Cookie", Cookie);
-                                                                                       /// send the response
-                                                                                       request->send(response);
-                                                                                   }
-                                                                                   else
-                                                                                   {
-                                                                                       /// bad password/ssid
-                                                                                       request->send(404, "text/plain", "wrong password/ssid");
-                                                                                   }
-                                                                               }
-                                                                           });
+                    /// create a response
+                    AsyncWebServerResponse *response = request->beginResponse(201, "text/plain", "accepted");
+                    /// create a cookie for authentification purpose
+                    String clientIp = request->client()->localIP().toString();
+                    String Cookie = ("ACCESS=" + createJWT(clientIp) + ";SameSite=Strict");
+                    /// set the cookie
+                    response->addHeader("Set-Cookie", Cookie);
+                    /// send the response
+                    request->send(response);
+                }
+                else
+                {
+                    /// bad password/ssid
+                    request->send(404, "text/plain", "wrong password/ssid");
+                }
+            } });
 
     /// add the handler function
     m_server.addHandler(handler);

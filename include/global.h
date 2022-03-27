@@ -1,6 +1,6 @@
 /**
  * @file global.h
- * @author DUCLOS Thomas
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief This file contain all the extern declaration for the global variables
  * @version 0.1
  * @date 2022-03-21

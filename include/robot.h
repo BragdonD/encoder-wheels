@@ -1,6 +1,6 @@
 /**
  * @file robot.h
- * @author Thomas DUCLOS
+ * @author Thomas DUCLOS - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief This file is the header file for all the functions and structures related to the captor
  * @version 0.1
  * @date 2022-02-21

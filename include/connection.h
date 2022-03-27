@@ -1,6 +1,6 @@
 /**
  * @file connection.h
- * @author DUCLOS Thomas
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief header file for the ESP8266WiFi class
  * @version 0.1
  * @date 2022-03-21

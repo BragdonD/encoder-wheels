@@ -1,6 +1,6 @@
 /**
  * @file motor.h
- * @author your name (you@domain.com)
+ * @author DUCLOS Thomas - KEBE Ibrahim - VIDAL Hugo - FEVE Quentin
  * @brief This file is the header file for all the functions and structures related to the motor
  * @version 0.1
  * @date 2022-02-21
