@@ -24,14 +24,18 @@ body {
 
 [aria-label] {
     position: relative;
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 [aria-label]:after {
     content: attr(aria-label);
     display: none;
     position: absolute;
-    top: 110%;
-    left: 10px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 5000;
     pointer-events: none;
     padding: 8px 10px;

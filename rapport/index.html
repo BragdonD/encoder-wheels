@@ -16,7 +16,9 @@
         <nav class="main-menu container column">
             <div class="container row fixed-menu">
                 <div class="logo">
-                    <a href="#content"><h1>Squad 1063</h1></a>
+                    <a href="#content">
+                        <h1>Squad 1063</h1>
+                    </a>
                 </div>
                 <button onclick="handleDisplayMenu(event)">
                     <svg viewBox="0 0 24 24" height="20" width="20" preserveAspectRatio="xMidYMid meet"
@@ -28,36 +30,39 @@
             </div>
             <div id="menu-wrapper" class="menu-wrapper hidden">
                 <ul class="menu list container column">
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
+                        <a href="#pres">Présentation</a>
+                    </li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#obj">Objectif</a>
                     </li>
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#equipe">L'équipe</a>
                     </li>
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#context">Contexte et problématique</a>
                     </li>
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#concept">Conception</a>
                     </li>
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#dev">Développement</a>
                     </li>
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#test">Test et validation</a>
                     </li>
-                    <li>
+                    <li onclick="handleDisplayMenu(event)">
                         <a href="#bilan">Bilan</a>
                     </li>
-                    <li>
-                        <a href="#bilan">Annexe</a>
+                    <li onclick="handleDisplayMenu(event)">
+                        <a href="#annexe">Annexe</a>
                     </li>
                 </ul>
             </div>
             <script type="text/javascript">
                 let mainMenu = document.getElementById("menu-wrapper");
                 const handleDisplayMenu = (event) => {
-                    mainMenu.classList.contains("hidden") ? 
+                    mainMenu.classList.contains("hidden") ?
                         mainMenu.classList.remove("hidden") : mainMenu.classList.add("hidden");
                 }
             </script>
@@ -65,87 +70,211 @@
     </header>
     <!--Main Rapport Code-->
     <div id="content">
-        <div>
-            <main>
+        <div class="article-wrapper">
+            <main class="wrapper-content">
                 <div class="title-wrapper">
                     <h1 class="title-rapport">ESP8266 Web Server - Le contrôleur de moteur DC - NodeMCU</h1>
                 </div>
                 <div class="pres-block">
-                    <div>
-                        <p>Ce projet a été réalisé par Ibrahim KEBE, Thomas DUCLOS, Hugo VIDAL, Quentin FEVE. Nous sommes tous les 4 étudiants à l'ECE Paris en ING2. </p>
+                    <div id="pres" class="text-wrapper">
+                        <p>Ce projet a été réalisé par Ibrahim KEBE, Thomas DUCLOS, Hugo VIDAL, Quentin FEVE. Nous
+                            sommes tous les 4 étudiants à l'<strong aria-label="Ecole Centrale D'électronique">ECE
+                                Paris</strong> en <span aria-label="Deuxième année du cycle ingénieur">ING2</span>. </p>
                     </div>
-                    <div>
+                    <div class="title-wrapper">
                         <h2>Présentation</h2>
                     </div>
-                    <div>
+                    <div class="text-wrapper">
                         <p>
-                            Ce quatrième projet d’électronique a été très différent des trois précédents, car il était en relation direct avec notre projet annuel l'<strong aria-label="Compétition de Robotique Multidisciplinaire">ECE CUP</strong>.<br/> 
-                            La durée du projet est d'environ un mois et demi.<br/>
-                            Lors de ce projet, nous devions mettre en place de nouvelles fonctionnalités pour notre robot à l’aide des connaissances acquises avec la matière <strong>Systèmes Bouclés</strong>.<br/>
+                            Ce quatrième projet d’électronique a été très différent des trois précédents, car il était
+                            en relation direct avec notre projet annuel l'<strong
+                                aria-label="Compétition de Robotique Multidisciplinaire">ECE CUP</strong>.<br />
+                            La durée du projet est d'environ un mois et demi.<br />
+                            Lors de ce projet, nous devions mettre en place de nouvelles fonctionnalités pour notre
+                            robot à l’aide des connaissances acquises avec la matière <strong
+                                aria-label="Un contrôle en boucle fermée est une forme de contrôle d'un système qui intègre la réaction de ce système">Systèmes
+                                Bouclés</strong>.<br />
                             Nous avions pour objectif de développer les fonctionnalités suivantes :<br>
                         </p>
                         <ul>
-                            <li><p>Réguler la vitesse du robot.</p></li>
-                            <li><p>Transformer le robot en gyroscope.</p></li>
-                            <li><p>Communiquer avec un protocole wifi avec le robot.</p></li>
-                            <li><p>Mettre en place une page web pour contrôler le robot.</p></li>
+                            <li>
+                                <p>Réguler la vitesse du robot.</p>
+                            </li>
+                            <li>
+                                <p>Transformer le robot en gyroscope.</p>
+                            </li>
+                            <li>
+                                <p>Communiquer avec un protocole wifi avec le robot.</p>
+                            </li>
+                            <li>
+                                <p>Mettre en place une page web pour contrôler le robot.</p>
+                            </li>
                         </ul>
                     </div>
-                    <div>
-                        <p>Nous attestons que ce travail est original, qu'il est le fruit d'un travail commun à la squad et qu'il a été rédigé de manière autonome.</p>
+                    <div class="text-wrapper">
+                        <p>Nous attestons que ce travail est original, qu'il est le fruit d'un travail commun à la squad
+                            et qu'il a été rédigé de manière autonome.</p>
                         <p class="end-align">Fait à Paris le <strong><time>27/03/2022</time></strong></p>
                     </div>
                 </div>
                 <div>
-                    <div>
+                    <div class="title-wrapper">
                         <h2 id="obj">Objectif</h2>
                     </div>
-                    <div>
-                        Ce rapport a pour but de résumer et expliquer comment et par quels moyens nous avons pu accomplir ou non les missions qui nous étaient demandées.<br/>
-                        Ce document retrace notre avancée et expose les problèmes que nous avons pu rencontrer et les solutions trouvées afin de résoudre ces derniers et mener à bien notre projet.<br/>
-                        Dans ce rapport se trouve aussi les ressentis de tous, nos avis sur notre travail d’équipe, notre organisation, notre communication.
+                    <div class="text-wrapper">
+                        <p>
+                            Ce rapport a pour but de résumer et expliquer comment et par quels moyens nous avons pu
+                            accomplir ou non les missions qui nous étaient demandées.<br />
+                            Ce document retrace notre avancée et expose les problèmes que nous avons pu rencontrer et
+                            les
+                            solutions trouvées afin de résoudre ces derniers et mener à bien notre projet.<br />
+                            Dans ce rapport se trouve aussi les ressentis de tous, nos avis sur notre travail d’équipe,
+                            notre organisation, notre communication.
+                        </p>
                     </div>
                 </div>
                 <div>
-                   <div>
-                       <h2 id="equipe">L'équipe</h2>
-                   </div> 
-                   <div>
-                       <div>
-                           <h3>Présentation de l'équipe</h3>
-                       </div>
-                       <div>
-                           <p>
-                                Nous sommes la SQUAD1063, composé de quatre étudiants d’ING2 du TD6. L’année dernière nous étions trois et ce n’est qu’en début d’année que Quentin issu de PREPAC nous a rejoint. Quentin a su s’adapter et s’investir directement dans le projet ECE CUP il a donc été d’une aide importante malgré son manque d’expérience en électronique dû à la prépa accélérée. Notre groupe est soudé, nous avons une bonne communication et une bonne harmonie ce qui nous a permis d’avancer tous ensemble dans la même direction et mener à bien notre objectif commun.
-                           </p>
-                       </div>
-                       <div>
-                           <img src="./img/photo-equipe.png">
-                       </div>
-                   </div>
-                   <div>
-                        <div>
+                    <div class="title-wrapper">
+                        <h2 id="equipe">L'équipe</h2>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
+                            <h3>Présentation de l'équipe</h3>
+                        </div>
+                        <div class="text-wrapper">
+                            <p>
+                                Nous sommes la <strong>Squad 1063</strong>, composé de quatre étudiants d’ING2 du TD6.
+                                L’année dernière
+                                nous étions trois et ce n’est qu’en début d’année que Quentin issu de PREPAC nous a
+                                rejoint. Quentin a su s’adapter et s’investir directement dans le projet ECE CUP il a
+                                donc été d’une aide importante malgré son manque d’expérience en électronique dû à la
+                                prépa accélérée. Notre groupe est soudé, nous avons une bonne communication et une bonne
+                                harmonie ce qui nous a permis d’avancer tous ensemble dans la même direction et mener à
+                                bien notre objectif commun.
+                            </p>
+                        </div>
+                        <div class="img-wrapper center" aria-label="Photo de l'équipe">
+                            <img src="./img/photo-equipe.png" alt="Photo de l'équipe">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
                             <h3>Organisation de l'équipe</h3>
                         </div>
-                        <div>
+                        <div class="text-wrapper">
                             <p>
-                                Notre équipe est assez bien organisé, nous essayons de programmer des suivis de projet assez souvent environ une fois par semaine, en plus des heures d’autonomie ECE CUP prévus dans notre emploi du temps. Nous nous sommes répartit le travail de manière simple, notre Trello (qui existe depuis le début de l’année) nous a vraiment aidé à nous repérer dans l’avancement du projet. De plus, il règne une bonne ambiance au sein de notre équipe ce qui permet une communication fluide entre nous et une organisation efficace.
+                                Notre équipe est assez bien organisé, nous essayons de programmer des suivis de projet
+                                assez souvent environ une fois par semaine, en plus des heures d’autonomie ECE CUP
+                                prévus dans notre emploi du temps. Nous nous sommes répartit le travail de manière
+                                simple, notre Trello (qui existe depuis le début de l’année) nous a vraiment aidé à nous
+                                repérer dans l’avancement du projet. De plus, il règne une bonne ambiance au sein de
+                                notre équipe ce qui permet une communication fluide entre nous et une organisation
+                                efficace.
                             </p>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div>
+                    <div class="title-wrapper">
                         <h2 id="context">Contexte et problématique</h2>
                     </div>
                     <div>
-                        <div>
+                        <div class="title-wrapper">
                             <h3>Contexte</h3>
+                        </div>
+                        <div class="text-wrapper">
+                            <div class="img-wrapper"
+                                aria-label="Image montrant le principe de fonctionnement d'un gyropode de ornicom.fr">
+                                <img src="./img/gyropode-principe-de-fonctionnement-ornicom.jpg"
+                                    alt="image montrant le principe de fonctionnement d'un gyropode venant de ornicom.fr">
+                            </div>
+                            <p>
+                                Le gyropode est une invention de Dean Kamen, Susan D Dastous, Robert Duggan et Michael
+                                Guay. Le gyropode a été inventé en l’an 2000 et son premier modèle fût le Segway TPI167.
+                                Ce premier modèle a été précurseur du gyropode a 6 roues inventé en avril 2003 pour les
+                                handicapés. Vente après-vente, en 2006 la technologie leensteer qui permet de faire
+                                tourner le gyropode grâce au poids du corps et aujourd’hui on s’en sert dans la vie de
+                                tous les jours pour nos déplacements quotidiens.<br />
+                                Dans notre projet le gyropode sera utile pour stabiliser notre robot afin d’avoir des
+                                déplacements plus précis.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
+                            <h3>Problématique</h3>
+                        </div>
+                        <div class="text-wrapper">
+                            <p>
+                                L’objectif de ce projet est de pouvoir stabiliser le robot et de le contrôler via une
+                                interface web. Sur cette interface on doit pouvoir régler la vitesse des moteurs afin de
+                                diriger le robot dans ses déplacements. Il faut donc rendre les moteurs plus précis et
+                                pour se faire il est nécessaire d’intégrer un PID il faut donc pouvoir le régler aussi à
+                                l’aide du site. </p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="title-wrapper">
+                        <h2 id="concept">Conception</h2>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
+                            <h3>Architecture fonctionnelle</h3>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
+                            <h3>Architecture matérielle</h3>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
+                            <h3>Architecture logicielle</h3>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="title-wrapper">
+                        <h2 id="dev">Développement</h2>
+                    </div>
+                    <div class="text-wrapper">
+                        <p>
+                            Ce projet est divisé en quatre modules différents. En effet, pour mener à bien notre projet
+                            nous devions réaliser les parties les unes après les autres. Cette démarche nous a forcé à
+                            nous organiser, à communiquer et c’est pour cela que la répartition des tâches a été très
+                            importante.<br />
+                            Vous trouverez dans les paragraphes suivants la description de quatre différents
+                            modules et la manière avec laquelle nous avons procédé pour remplir toutes nos missions.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="title-wrapper">
+                            <h3>Module 1 : Le contrôleur de moteur DC</h3>
+                        </div>
+                        <div class="text-wrapper">
+                            <p>
+                                Ce module consiste en l’écriture d’un code permettant de
+                                contrôler les moteurs DC du robot. Pour ce faire, nous avons fixé les roues codeuses sur
+                                les moteurs et avons établi un code qui calcul la vitesse angulaire à l’aide d’une
+                                fonction d’interruption (voir algorigramme ci-dessous).
+                            </p>
+
+                        </div>
+                        <div class="img-wrapper center algorigramme" aria-label="Algorigramme du code du module 1">
+                            <img src="./img/algorigramme-module-1.png" alt="algorigramme du code du module 1">
                         </div>
                         <div>
                             <p>
-                                Le gyropode est une invention de Dean Kamen, Susan D Dastous, Robert Duggan et Michael Guay. Le gyropode a été inventé en l’an 2000 et son premier modèle fût le Segway TPI167. Ce premier modèle a été précurseur du gyropode a 6 roues inventé en avril 2003 pour les handicapés. Vente après-vente, en 2006 la technologie leensteer qui permet de faire tourner le gyropode grâce au poids du corps et aujourd’hui on s’en sert dans la vie de tous les jours pour nos déplacements quotidiens.<br/>
-                                Dans notre projet le gyropode sera utile pour stabiliser notre robot afin d’avoir des déplacements plus précis.
+                                La fonction d’interruption incrémente le nombre de trous de la roue codeuse détectés par
+                                le capteur. Ce nombre de trou est ensuite diviser par 20 qui est le nombre de trou
+                                présent sur la <strong
+                                    aria-label="Dispositif électronique permettant de mesurer sa rotation">roue
+                                    codeuse</strong>.
+                                Cette fonction de calcul est placée à l'intérieur d'un <strong
+                                    aria-label="Mécanisme automatique d'activation d'un dispositif à une heure prédéfinie.">timer
+                                    </strong> appelé toutes les secondes
+                                    pour obtenir une vitesse en tour par seconde. tours par le temps écoulé.
                             </p>
                         </div>
                     </div>
