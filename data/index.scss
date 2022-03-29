@@ -13,6 +13,15 @@ body {
     color: #fff;
 }
 
+#status {
+    color: #24f38c;
+    &.offline {
+        color: rgb(161, 17, 17);
+    }
+    font-family: "Roboto", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
 .wrapper {
     min-width: 100vw;
     min-height: 100vh;

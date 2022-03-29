@@ -432,14 +432,29 @@ void handleWSMessage(void *arg, uint8_t *data, size_t len, AsyncWebSocket *socke
             kd_B = json["kd_b"];
             pid_motorB.setKd(kd_B);
         }
-
-        /**
-         * @brief Notify all clients of the modification
-         *
-         */
-        String Data;
-        serializeJson(json, Data);
-        notifyClients(Data, socket);
+        if (json["newConnection"]) {
+            DynamicJsonDocument doc(1024);
+            JsonObject motA = doc.createNestedObject("motorA");
+            JsonObject motB = doc.createNestedObject("motorB");
+            motA["state"] = motorA->state;
+            motB["state"] = motorB->state;
+            motA["speed"] = motorA->wantedSpeed;
+            motB["speed"] = motorB->wantedSpeed;
+            String Data, Data2, DataF;
+            serializeJson(motA, Data);
+            serializeJson(motB, Data2);
+            DataF = "{\"motorA\":" + Data + ",\"motorB\":" + Data2 + "}";
+            Serial.println(DataF);
+            notifyClients(DataF, socket);
+        }else {
+            /**
+             * @brief Notify all clients of the modification
+             *
+             */
+            String Data;
+            serializeJson(json, Data);
+            notifyClients(Data, socket);
+        }
     }
 }
 
