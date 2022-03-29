@@ -9,6 +9,15 @@ body {
   color: #fff;
 }
 
+#status {
+  color: #24f38c;
+  font-family: "Roboto", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#status.offline {
+  color: #a11111;
+}
+
 .wrapper {
   min-width: 100vw;
   min-height: 100vh;

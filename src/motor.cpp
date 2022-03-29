@@ -27,7 +27,8 @@ motor *InitMotor(uint8_t dir_pin, uint8_t spd_pin)
     x->direction = FORWARD;
     x->speed = 0;
     x->wantedSpeed = 0;
-
+    x->state = OFF;
+    
     return x;
 }
 

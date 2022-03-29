@@ -32,6 +32,11 @@ function InitWS() : void {
  */
 function onOpen(e : Event) : void {
     console.log("Connection has been opened");
+    document.getElementById("status").innerHTML = "Online";
+    document.getElementById("status").classList.add("online");
+    websocket.send(JSON.stringify({
+        newConnection: true,
+    }))
 }
 /**
  * @brief Function to be called when the websocket connection is closed
@@ -39,80 +44,123 @@ function onOpen(e : Event) : void {
  */
 function onClose(e : CloseEvent) : void {
     console.log("Connection has been closed");
+    document.getElementById("status").innerHTML = "Offline";
+    document.getElementById("status").classList.add("offline");
 }
 /**
  * @brief Function to be called when the websocket received a message
  * @param e Message Event
  */
-function onMessage(e : MessageEvent) : void {
+function onMessage(e : MessageEvent) : void {   
     let data : Object = JSON.parse(e.data); ///parse the received message to extract the data
-    if (data["motorA"] !== undefined) { ///set data for motor A
-        if (data["motorA"]["speed"] !== undefined) {
-            let range : HTMLElement = document.getElementById("left-motor-speed");
-            (<HTMLInputElement>range).value = data["motorA"]["speed"];
-            let value : HTMLElement = document.getElementById("left-range-value");
-            value.innerHTML = data["motorA"]["speed"] + " turn/s";
+    if(data["motorA"] !== undefined && data["motorB"] !== undefined) {
+        console.log(data);
+        let range : HTMLElement = document.getElementById("left-motor-speed");
+        (<HTMLInputElement>range).value = data["motorA"]["speed"];
+        let value : HTMLElement = document.getElementById("left-range-value");
+        value.innerHTML = data["motorA"]["speed"] + " turn/s";
+        if( data["motorA"]["state"] === 1) {
+            let leftDivButtonContainer = document.getElementById("left-input-container");
+            (<HTMLInputElement>(document.getElementById("left-motor-speed"))).disabled = false;
+            leftDivButtonContainer.classList.remove("off");
+            leftDivButtonContainer.classList.add("on");
+            state = true;
         }
-        if(data["motorA"]["state"] !== undefined){
-            if( (data["motorA"]["state"] === "on" && state === true) || (data["motorA"]["state"] === "off" && state === false)) {
-                toggle(e);
+        else {
+            let leftDivButtonContainer = document.getElementById("left-input-container");
+            (<HTMLInputElement>(document.getElementById("left-motor-speed"))).disabled = true;
+            leftDivButtonContainer.classList.add("off");
+            leftDivButtonContainer.classList.remove("on");
+            state = false;
+        }
+        let range2 : HTMLElement = document.getElementById("right-motor-speed");
+        (<HTMLInputElement>range2).value = data["motorB"]["speed"];
+        let value2 : HTMLElement = document.getElementById("right-range-value");
+        value2.innerHTML = data["motorB"]["speed"] + " turn/s";
+        if( data["motorB"]["state"] === 1) {
+            let rightDivButtonContainer = document.getElementById("right-input-container");
+            (<HTMLInputElement>(document.getElementById("right-motor-speed"))).disabled = false;
+            rightDivButtonContainer.classList.remove("off");
+            rightDivButtonContainer.classList.add("on");
+            state2 = true;
+        }
+        else {
+            let rightDivButtonContainer = document.getElementById("right-input-container");
+            (<HTMLInputElement>(document.getElementById("right-motor-speed"))).disabled = true;
+            rightDivButtonContainer.classList.add("off");
+            rightDivButtonContainer.classList.remove("on");
+            state2 = false;
+        }
+    }
+    else {
+        if (data["motorA"] !== undefined) { ///set data for motor A
+            if (data["motorA"]["speed"] !== undefined) {
+                let range : HTMLElement = document.getElementById("left-motor-speed");
+                (<HTMLInputElement>range).value = data["motorA"]["speed"];
+                let value : HTMLElement = document.getElementById("left-range-value");
+                value.innerHTML = data["motorA"]["speed"] + " turn/s";
+            }
+            if(data["motorA"]["state"] !== undefined){
+                if( (data["motorA"]["state"] === "on" && state === true) || (data["motorA"]["state"] === "off" && state === false)) {
+                    toggle(e);
+                }
             }
         }
-    }
-    if (data["motorB"] !== undefined) {///set data for motor B
-        if (data["motorB"]["speed"] !== undefined) {
-            let range : HTMLElement = document.getElementById("right-motor-speed");
-            (<HTMLInputElement>range).value = data["motorB"]["speed"];
-            let value : HTMLElement = document.getElementById("right-range-value");
-            value.innerHTML = data["motorB"]["speed"] + " turn/s";
-        }
-        if(data["motorB"]["state"] !== undefined){
-            if( (data["motorB"]["state"] === "on" && state2 === true) || (data["motorB"]["state"] === "off" && state2 === false)) {
-                toggle2(e);
+        if (data["motorB"] !== undefined) {///set data for motor B
+            if (data["motorB"]["speed"] !== undefined) {
+                let range : HTMLElement = document.getElementById("right-motor-speed");
+                (<HTMLInputElement>range).value = data["motorB"]["speed"];
+                let value : HTMLElement = document.getElementById("right-range-value");
+                value.innerHTML = data["motorB"]["speed"] + " turn/s";
+            }
+            if(data["motorB"]["state"] !== undefined){
+                if( (data["motorB"]["state"] === "on" && state2 === true) || (data["motorB"]["state"] === "off" && state2 === false)) {
+                    toggle2(e);
+                }
             }
         }
-    }
-    if(data["CurrentSpeedB"] !== undefined) {///set data for values B
-        if(valuesB.length > 100) {
-            valuesB.shift();
+        if(data["CurrentSpeedB"] !== undefined) {///set data for values B
+            if(valuesB.length > 100) {
+                valuesB.shift();
+            }
+            valuesB.push(data["CurrentSpeedB"]);
         }
-        valuesB.push(data["CurrentSpeedB"]);
-    }
-    if(data["CurrentSpeedA"] !== undefined) {///set data for values A
-        if(valuesA.length > 100) {
-            valuesA.shift();
+        if(data["CurrentSpeedA"] !== undefined) {///set data for values A
+            if(valuesA.length > 100) {
+                valuesA.shift();
+            }
+            valuesA.push(data["CurrentSpeedA"]);
         }
-        valuesA.push(data["CurrentSpeedA"]);
-    }
-    if(data["kp_a"] !== undefined) {
-        console.log(data);
-        (<HTMLInputElement>document.getElementById("left-kp")).value = data["kp_a"];
-        document.getElementById("left-kp-value").innerHTML = data["kp_a"];
-    }
-    if(data["ki_a"] !== undefined) {
-        console.log(data);
-        (<HTMLInputElement>document.getElementById("left-ki")).value = data["ki_a"];
-        document.getElementById("left-ki-value").innerHTML = data["ki_a"];
-    }
-    if(data["kd_a"] !== undefined) {
-        console.log(data);
-        (<HTMLInputElement>document.getElementById("left-kd")).value = data["kd_a"];
-        document.getElementById("left-kd-value").innerHTML = data["kd_a"];
-    }
-    if(data["kp_b"] !== undefined) {
-        console.log(data);
-        (<HTMLInputElement>document.getElementById("right-kp")).value = data["kp_b"];
-        document.getElementById("right-kp-value").innerHTML = data["kp_b"];
-    }
-    if(data["ki_b"] !== undefined) {
-        console.log(data);
-        (<HTMLInputElement>document.getElementById("right-ki")).value = data["ki_b"];
-        document.getElementById("right-ki-value").innerHTML = data["ki_b"];
-    }
-    if(data["kd_b"] !== undefined) {
-        console.log(data);
-        (<HTMLInputElement>document.getElementById("right-kd")).value = data["kd_b"];
-        document.getElementById("right-kd-value").innerHTML = data["kd_b"];
+        if(data["kp_a"] !== undefined) {
+            //console.log(data);
+            (<HTMLInputElement>document.getElementById("left-kp")).value = data["kp_a"];
+            document.getElementById("left-kp-value").innerHTML = data["kp_a"];
+        }
+        if(data["ki_a"] !== undefined) {
+            //console.log(data);
+            (<HTMLInputElement>document.getElementById("left-ki")).value = data["ki_a"];
+            document.getElementById("left-ki-value").innerHTML = data["ki_a"];
+        }
+        if(data["kd_a"] !== undefined) {
+            //console.log(data);
+            (<HTMLInputElement>document.getElementById("left-kd")).value = data["kd_a"];
+            document.getElementById("left-kd-value").innerHTML = data["kd_a"];
+        }
+        if(data["kp_b"] !== undefined) {
+            //console.log(data);
+            (<HTMLInputElement>document.getElementById("right-kp")).value = data["kp_b"];
+            document.getElementById("right-kp-value").innerHTML = data["kp_b"];
+        }
+        if(data["ki_b"] !== undefined) {
+            //console.log(data);
+            (<HTMLInputElement>document.getElementById("right-ki")).value = data["ki_b"];
+            document.getElementById("right-ki-value").innerHTML = data["ki_b"];
+        }
+        if(data["kd_b"] !== undefined) {
+            //console.log(data);
+            (<HTMLInputElement>document.getElementById("right-kd")).value = data["kd_b"];
+            document.getElementById("right-kd-value").innerHTML = data["kd_b"];
+        }
     }
 }
 /**
