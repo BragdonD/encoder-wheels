@@ -9,6 +9,7 @@
  *
  */
 #include <Arduino.h>
+#include <Servo.h>
 #include "ws.h"
 #include "global.h"
 #include "PID.h"
@@ -23,11 +24,17 @@ captor *captorA, *captorB;       /// Both Captors
 SimpleTimer SpeedPrinting_timer; /// calcul timer
 SimpleTimer SendData_timer;      /// ws timer
 ESP8266WiFi wifis(true, MDNS_NAME);
-WebServer server(100);
+///WebServer server(100);
 PID pid_motorA;
 PID pid_motorB;
-float kp_A = 0, ki_A = 0, kd_A = 0;
-float kp_B = 0, ki_B = 0, kd_B = 0;
+float kp_A = KP_MOTOR_PID, ki_A = KI_MOTOR_PID, kd_A = KD_MOTOR_PID;
+float kp_B = KP_MOTOR_PID, ki_B = KI_MOTOR_PID, kd_B = KD_MOTOR_PID;
+
+uint16_t port = 1063;
+WiFiServer WiFiServ(port);
+
+Servo flag;
+long long start = 0;
 
 /// Declaration of the function
 void IRAM_ATTR ISR_IncreaseCaptorBCount();
@@ -41,8 +48,8 @@ void setup()
 
   /// Setup the multiple wifi written in secret.h
   wifis.setup();
-
-  server.setup();
+  flag.attach(15U);
+  //server.setup();
 
   /// Initialisation of every pin as INPUT or OUTPUT
   pinMode(MOTOR1_DIR_PIN, OUTPUT);
@@ -69,7 +76,7 @@ void setup()
   /// Initialisation of the timer to print and calcul the motors's speed.
   SpeedPrinting_timer.setInterval(1000, printSpeedMotors);
   /// Initialisation of the timer to send the speed of both motors to all clients
-  SendData_timer.setInterval(100, sendCurrentsSpeed);
+  ///SendData_timer.setInterval(100, sendCurrentsSpeed);
 
 #if MOTOR_TEST == true
   motorA->actualSpeed = 1.7;
@@ -77,26 +84,114 @@ void setup()
   motorA->state = ON;
   motorB->state = ON;
 #endif
-}
-
-void loop()
-{
-  Moove(*motorA);
-  Moove(*motorB);
-  SpeedPrinting_timer.run(); /// Need to be called to make the timer works
-  SendData_timer.run();
-#if MOTOR_TEST == false
-  wifis.run();
-  server.run();
   pid_motorA.setKp(kp_A);
   pid_motorA.setKi(ki_A);
   pid_motorA.setKd(kd_A);
   pid_motorB.setKp(kp_B);
   pid_motorB.setKi(ki_B);
   pid_motorB.setKd(kd_B);
-#endif
-  digitalWrite(LED_STATE_MOTOR1, motorA->state);
-  digitalWrite(LED_STATE_MOTOR2, motorB->state);
+  WiFiServ.begin();
+  flag.write(0);
+}
+
+bool setFlag = false;
+
+void loop()
+{
+  WiFiClient client = WiFiServ.available();
+  if(client) {
+    if(client.connected())
+    {
+      
+      Serial.println("Client Connected.");
+      
+    }
+    while(client.connected())
+    {
+      if(millis() - start >= 90000)
+      { 
+        motorA->state = OFF;
+        motorB->state = OFF;
+        if(!setFlag)
+        {
+          setFlag = true;
+          flag.write(180);
+        }
+      }
+      char data = '1';
+      while(client.available()>0){
+        // read data from the connected client
+        data = client.read(); 
+      }
+      if(millis() - start >= 90000)
+      { 
+        motorA->state = OFF;
+        motorB->state = OFF;
+      }
+      else 
+      {
+        switch (data)
+        {
+        case 'I':
+          motorA->state = ON;
+          motorB->state = ON;
+          start = millis();
+          break;
+        case '0':
+          motorA->state = OFF;
+          motorB->state = OFF;
+          break;
+        case 'Z':
+        case 'z':
+          motorA->state = ON;
+          motorB->state = ON;
+          MooveForward(motorA, 255);
+          MooveForward(motorB, 255);
+          break;
+        case 'Q':
+        case 'q':
+          motorA->state = ON;
+          motorB->state = ON;
+          MooveForward(motorA, 0);
+          MooveForward(motorB, 255);
+          break;
+        case 'S':
+        case 's':
+          motorA->state = ON;
+          motorB->state = ON;
+          MooveBackward(motorA, 255);
+          MooveBackward(motorB, 255);
+          break;
+        case 'D':
+        case 'd':
+          motorA->state = ON;
+          motorB->state = ON;
+          MooveForward(motorA, 255);
+          MooveForward(motorB, 0);
+          break;
+        
+        default:
+          break;
+        }
+      }
+      
+      Moove(*motorA);
+      Moove(*motorB);
+      SpeedPrinting_timer.run(); /// Need to be called to make the timer works
+      SendData_timer.run();
+      #if MOTOR_TEST == false
+        wifis.run();
+        //server.run();
+      #endif
+      digitalWrite(LED_STATE_MOTOR1, motorA->state);
+      digitalWrite(LED_STATE_MOTOR2, motorB->state);
+    }
+    motorA->state = OFF;
+    motorB->state = OFF;
+  }
+  SpeedPrinting_timer.run(); /// Need to be called to make the timer works
+  SendData_timer.run();
+  wifis.run();
 }
 /**
  * @brief ISR function to be call inside Interrupt function to increase the hole count of the A captor
@@ -165,5 +260,5 @@ void sendCurrentsSpeed()
   String Data;
   serializeJson(object, Data);
   /// send our object to all clients
-  notifyClients(Data, &(const_cast<AsyncWebSocket &>(server.getWS())));
+  //notifyClients(Data, &(const_cast<AsyncWebSocket &>(server.getWS())));
 }

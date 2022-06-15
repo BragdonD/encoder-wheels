@@ -107,7 +107,8 @@ String ESP8266WiFi::getMdnsName()
  */
 void ESP8266WiFi::setup()
 {
-    pinMode(LED_WIFI, OUTPUT);
+    //pinMode(LED_WIFI, OUTPUT);
+    WiFi.mode(WIFI_STA);
     IPAddress local_IP(192, 168, 1, 184);
     // Set your Gateway IP address
     IPAddress gateway(192, 168, 1, 1);
